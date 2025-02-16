@@ -165,7 +165,7 @@ const Settings: React.FC<SettingsProps> = ({
         >
           U3O1
         </div>
-        <div
+        {/* <div
           className={`strategyCard ${
             selectedBtn === "fourth" ? "successBackground" : "normalBackground"
           }`}
@@ -180,7 +180,7 @@ const Settings: React.FC<SettingsProps> = ({
           onClick={() => handleStrategy("fifth")}
         >
           E6U6
-        </div>
+        </div> */}
       </div>
     </div>
   )

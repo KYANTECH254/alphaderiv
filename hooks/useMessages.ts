@@ -57,7 +57,7 @@ export const useMessages = ({
   const [symbol, setSymbol] = useState<any>("1HZ100V")
   const [resetDemoBal, setResetDemoBal] = useState<boolean>()
   const [consecutiveWins, setconsecutiveWins] = useState<number>(0);
-  const [maxConsecutiveWins] = useState<number>(3);
+  const [maxConsecutiveWins] = useState<number>(2);
   // const [predict, setpredict] = useState(true)
   // const [predictorSHA, setPredictorInput] = useState<any>("NULL")
   const assetRef = useRef<any>()
@@ -242,7 +242,7 @@ export const useMessages = ({
             break;
             
           case "lost":
-            setStakeValue(firstStake);
+            setStakeValue(defaultStake);
             setconsecutiveWins(0); 
             break;
       
