@@ -23,12 +23,12 @@ export default function manifest(): MetadataRoute.Manifest {
         ],
         screenshots: [
             {
-                src: "/icon-720-1280.png",
+                src: "/icon-1280-720.png",
                 type: "image/png",
                 sizes: "1280x720",
             },
             {
-                src: "/icon-1280-720.png",
+                src: "/icon-720-1280.png",
                 type: "image/png",
                 sizes: "720x1280",
             }
