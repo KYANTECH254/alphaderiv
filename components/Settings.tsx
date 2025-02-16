@@ -165,6 +165,7 @@ const Settings: React.FC<SettingsProps> = ({
         >
           U3O1
         </div>
+        
         {/* <div
           className={`strategyCard ${
             selectedBtn === "fourth" ? "successBackground" : "normalBackground"
