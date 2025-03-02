@@ -15,12 +15,12 @@ const Toast: React.FC<ToastProps> = ({ message, type }) => {
       setShowToast(true)
       const timer = setTimeout(() => {
         setShowToast(false)
-      }, 3000)
+      }, 5000)
 
       return () => clearTimeout(timer)
     }
   }, [message, type])
-  return <>{showToast && <div className={`toast ${type}`}>{message}</div>}</>
+  return <>{showToast && <div className={`p-2 toast ${type}`}>{message}</div>}</>
 }
 
 export default Toast

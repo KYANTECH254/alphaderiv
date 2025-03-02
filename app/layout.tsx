@@ -1,16 +1,11 @@
 import "./globals.css"
 import "./components.css"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-})
+import { SubscriptionProvider } from "@/contexts/SubscriptionProvider"
 
 export const metadata: Metadata = {
-  title: "Deriv",
-  description: "Deriv Automated Trading",
+  title: "Alphabot Deriv",
+  description: "Alphabot Deriv Automated Trading",
 }
 
 export default function RootLayout({
@@ -19,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en' className={`${inter.variable} font-sans`}>
+    <html lang='en'>
       <head>
         <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="splash_screens/iPhone_16_Pro_Max_landscape.png" />
         <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="splash_screens/iPhone_16_Pro_landscape.png" />
@@ -65,7 +60,11 @@ export default function RootLayout({
         <link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash_screens/8.3__iPad_Mini_portrait.png" />
 
       </head>
-      <body>{children}</body>
+      <body>
+        <SubscriptionProvider>
+          {children}
+        </SubscriptionProvider>
+      </body>
     </html>
   )
 }

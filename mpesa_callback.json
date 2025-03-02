@@ -1,0 +1,24 @@
+{
+  "invoice_id": "YMOLBE6",
+  "state": "PROCESSING",
+  "provider": "M-PESA",
+  "charges": "0.00",
+  "net_amount": "100.00",
+  "currency": "KES",
+  "value": "100.00",
+  "account": "254723551116",
+  "api_ref": "Alphabot Subscription",
+  "mpesa_reference": null,
+  "host": "102.0.16.22",
+  "card_info": {
+    "bin_country": null,
+    "card_type": null
+  },
+  "retry_count": 0,
+  "failed_reason": "Request cancelled by user",
+  "failed_code": "-1",
+  "failed_code_link": null,
+  "created_at": "2025-03-02T20:22:51.942764+03:00",
+  "updated_at": "2025-03-02T20:23:21.424542+03:00",
+  "challenge": "Sss333123###kyan"
+}

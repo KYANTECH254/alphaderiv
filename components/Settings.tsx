@@ -1,4 +1,5 @@
 "use client"
+import { useSubscription } from "@/contexts/SubscriptionProvider"
 import React, { useEffect, useState } from "react"
 interface SettingsProps {
   data: any
@@ -7,7 +8,7 @@ interface SettingsProps {
   setToastMessage: (newValue: any) => void
   setToastType: (newValue: any) => void
   martingale: boolean
-  profitlossmartingale:boolean
+  profitlossmartingale: boolean
   setStrategy: any
   setSymbol: any
   setResetDemoBal: (newValue: boolean) => void
@@ -24,6 +25,8 @@ const Settings: React.FC<SettingsProps> = ({
   setSymbol,
   setResetDemoBal,
 }) => {
+  const { isLoggedIn, subscriptionPackage, logout } = useSubscription();
+
   const [selectedBtn, setSelectedBtn] = useState<string>("first")
   useEffect(() => {
     handleStrategy("first")
@@ -52,10 +55,8 @@ const Settings: React.FC<SettingsProps> = ({
     }
   }
   const handleOncheckedMartingale = () => {
-    if (martingale) {
-      setToastMessage("Bothways Martingale is enabled, disable it first!")
-      setToastType("error")
-      return;
+    if (profitlossmartingale) {
+      setProfitLossMartingaleState(false)
     }
     if (!martingale) {
       setMartingaleState(true)
@@ -69,9 +70,7 @@ const Settings: React.FC<SettingsProps> = ({
   }
   const handleOncheckedProfitLossMartingale = () => {
     if (martingale) {
-      setToastMessage("Martingale is enabled, disable it first!")
-      setToastType("error")
-      return;
+      setMartingaleState(false)
     }
     if (!profitlossmartingale) {
       setProfitLossMartingaleState(true)
@@ -111,6 +110,29 @@ const Settings: React.FC<SettingsProps> = ({
     setToastType("success")
     setResetDemoBal(true)
   }
+  const getTimeLeft = (expiry: Date | string) => {
+    const expiryDate = new Date(expiry).getTime();
+    const now = Date.now();
+    const diff = expiryDate - now;
+
+    if (diff <= 0) return "Expired";
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    if (days > 0) {
+      return `${days} day${days !== 1 ? "s" : ""} ${hours} hour${hours !== 1 ? "s" : ""}`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours !== 1 ? "s" : ""} ${minutes} minute${minutes !== 1 ? "s" : ""}`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes !== 1 ? "s" : ""} ${seconds} second${seconds !== 1 ? "s" : ""}`;
+    } else {
+      return `${seconds} second${seconds !== 1 ? "s" : ""}`;
+    }
+  };
+
   return (
     <div className='settingsContainer'>
       <div className='settingHeader'>Settings</div>
@@ -132,40 +154,54 @@ const Settings: React.FC<SettingsProps> = ({
           {data.loginid} ({data.currency})
         </div>
       </div>
+      <div className='settingsContainerTitle2 mt-1'>Subscription</div>
+      {isLoggedIn && (
+        <div className='accountInfo'>
+          <div
+            className={`accountTypeInfo ${subscriptionPackage?.package === "Daily" ? "successInfo" : ""
+              } ${subscriptionPackage?.package === "Weekly" ? "warningInfo" : ""
+              } ${subscriptionPackage?.package === "Monthly" ? "dangerInfo" : ""}`}
+          >
+            {subscriptionPackage?.package || "No active subscription"}
+          </div>
+          <div className="text-sm font-bold text-red-500">
+            {subscriptionPackage?.pkgExpiry ? getTimeLeft(subscriptionPackage.pkgExpiry) : "-"} left
+          </div>
+
+        </div>
+      )}
       <div className='settingsContainerTitle'>Positions Recovery</div>
       <div className='settingsList1 displayRow'>
         <h3 className='settingsListSubTitle'>Martingale</h3>
         <section className='slider-checkbox'>
-          <input type='checkbox' id='c2' onChange={handleOncheckedMartingale} />
+          <input type='checkbox' id='c2' checked={martingale} onChange={handleOncheckedMartingale} />
           <label htmlFor='Martingale'></label>
         </section>
       </div>
       <div className='settingsList1 displayRow'>
         <h3 className='settingsListSubTitle'>Bothways Martingale</h3>
         <section className='slider-checkbox'>
-          <input type='checkbox' id='c3' onChange={handleOncheckedProfitLossMartingale} />
+          <input type='checkbox' id='c3' checked={profitlossmartingale} onChange={handleOncheckedProfitLossMartingale} />
           <label htmlFor='ProfitLossMartingale'></label>
         </section>
       </div>
       <div className='settingsContainerTitle2 mt-2'>Strategies</div>
       <div className='settingsList2'>
         <div
-          className={`strategyCard ${
-            selectedBtn === "first" ? "successBackground" : "normalBackground"
-          }`}
+          className={`strategyCard ${selectedBtn === "first" ? "successBackground" : "normalBackground"
+            }`}
           onClick={() => handleStrategy("first")}
         >
           U3O3
         </div>
         <div
-          className={`strategyCard ${
-            selectedBtn === "second" ? "successBackground" : "normalBackground"
-          }`}
+          className={`strategyCard ${selectedBtn === "second" ? "successBackground" : "normalBackground"
+            }`}
           onClick={() => handleStrategy("second")}
         >
           U3O1
         </div>
-        
+
         {/* <div
           className={`strategyCard ${
             selectedBtn === "fourth" ? "successBackground" : "normalBackground"
@@ -182,6 +218,13 @@ const Settings: React.FC<SettingsProps> = ({
         >
           E6U6
         </div> */}
+      </div>
+      <div className='settingsContainerTitle2 mt-1'>Bet Status</div>
+      <div className="flex flex-wrap">
+        <div className="tradeHistoryInfo wonTradeInfo p-2 items-center">Won</div>
+        <div className="tradeHistoryInfo cancelTradeInfo p-2 items-center">Canceled</div>
+        <div className="tradeHistoryInfo lostTradeInfo p-2 items-center">Lost</div>
+        <div className="tradeHistoryInfo runningTradeInfo p-2 items-center">Open</div>
       </div>
     </div>
   )

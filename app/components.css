@@ -75,7 +75,7 @@
   height: 20px;
 }
 .slider-checkbox input:checked + label:before {
-  content: "\f00c";
+  content: "✔"; 
   padding-left: 6px;
 }
 .slider-checkbox input:checked + label:after {
@@ -95,7 +95,7 @@
   transition: background-color 0.3s, left 0.3s;
 }
 .slider-checkbox label:before {
-  content: "\f00d";
+  content: "✖";
   color: #fff;
   box-sizing: border-box;
   font-family: "FontAwesome", sans-serif;

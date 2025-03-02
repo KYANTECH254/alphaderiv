@@ -1,4 +1,4 @@
 #!/bin/bash
-npm install        
-npm run build       
-pm2 restart deriv
+git add .
+git commit -m "update"
+git push -u origin main

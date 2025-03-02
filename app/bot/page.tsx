@@ -18,7 +18,7 @@ const page = () => {
     )
 }
 
-const GetToken = () => {
+const GetToken = () => {  
     const { token } = useGetQueryParams()
     const { toastMessage, toastType, setToastMessage, setToastType } = useToast()
     const { connected, setConnected, messages, socket } = useWebsokets({
@@ -75,7 +75,7 @@ const GetToken = () => {
             setLiveAction("Stake is empty!")
             setLiveActionClassName("dangerInfo")
             setInvalidINputValue(true)
-            return setStakeValue(parseFloat("0.35"))
+            return setStakeValue(parseFloat("0.5"))
         }
 
         if (stakeValue < 0.34) {
@@ -89,7 +89,7 @@ const GetToken = () => {
             setLiveAction("Maximum stake is 1000 USD")
             setLiveActionClassName("dangerInfo")
             setInvalidINputValue(true)
-            return setStakeValue(parseFloat("0.35"))
+            return setStakeValue(parseFloat("0.5"))
         }
         setInvalidINputValue(false)
         setStakeValue(stakeValue)
@@ -190,7 +190,9 @@ const GetToken = () => {
                             trades.map((trade: any) => (
                                 <div
                                     key={trade.contract_id}
-                                    className={`tradeHistoryInfo ${trade.status === "won" ? "wonTradeInfo" : "lostTradeInfo"
+                                    className={`tradeHistoryInfo ${trade.status === "won" && "wonTradeInfo"} ${trade.status === "lost" && "lostTradeInfo" } ${
+                                        trade.status === "open" && "runningTradeInfo"
+                                    }
                                         }`}
                                 >
                                     <div className='tradeHistoryInfo1'>

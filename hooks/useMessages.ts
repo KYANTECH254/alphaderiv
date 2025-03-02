@@ -38,7 +38,7 @@ export const useMessages = ({
   const [asset, setAsset] = useState<number[]>([])
   const [stopped, setStopped] = useState(true)
   const [runningTrades, setRunningTrades] = useState(0)
-  const [firstStake, setFirstStake] = useState<number>(0.35)
+  const [firstStake, setFirstStake] = useState<number>(0.5)
   const [stake, setStakeValue] = useState(firstStake)
   const [stakes, setStakes] = useState<number[]>([])
   const [defaultStake, setDefaultStake] = useState(firstStake)
@@ -52,7 +52,7 @@ export const useMessages = ({
   const [profitClass, setProfitClass] = useState<any>()
   const [martingale, setMartingale] = useState<boolean>(false)
   const [martingaleOdd, setMartingaleOdd] = useState<number>(2)
-  const [profitlossmartingale, setProfitLossMartingale] = useState<boolean>(false)
+  const [profitlossmartingale, setProfitLossMartingale] = useState<boolean>(true)
   const [strategy, setStrategy] = useState<any>("first")
   const [strategyarray, setStrategyArray] = useState<number>(2)
   const [symbol, setSymbol] = useState<any>("1HZ100V")
@@ -71,8 +71,6 @@ export const useMessages = ({
   function sendMsg(msg: any) {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(msg))
-    } else {
-      console.warn("Socket not open. Message not sent:", msg)
     }
   }
 
@@ -149,7 +147,7 @@ export const useMessages = ({
         setLiveActionClassName("warningInfo")
         return
       }
-      if (runningTrades > 0) return
+      if (runningTrades > 0 && runningTrades == 1) return
       setLiveAction("Waiting for trading signal")
       setShowLiveActionLoader(true)
       setLiveActionClassName("dangerInfo")
@@ -259,6 +257,12 @@ export const useMessages = ({
       })
       setResetDemoBal(false)
     }
+    function cancelTrade(contractId: any) {
+      sendMsg({
+        sell: contractId,
+        price: 0,
+      })
+    }
     switch (messages?.msg_type) {
       case "authorize":
         const authData = messages?.authorize
@@ -313,30 +317,63 @@ export const useMessages = ({
         break
       case "buy":
         break
+      case "sell":
+        const sell = messages
+        break
       case "proposal_open_contract":
-        const proposal = messages?.proposal_open_contract
-        if (proposal?.is_sold) {
-          const data = messages.proposal_open_contract
-          const { status, profit, buy_price, contract_id } = data
-          const newTrade: Trade = { buy_price, status, profit, contract_id }
-          setTrades(prevTrades => [newTrade, ...prevTrades])
-          setFakeTrades(prevTrades => [newTrade, ...prevTrades])
-          setRunningTrades(0)
-          setShowLiveActionLoader(false)
+        const proposal = messages?.proposal_open_contract;
+        if (!proposal) break;
+        const { contract_id, buy_price, status, profit, is_sold } = proposal;
+        setTrades(prevTrades => {
+          const existingIndex = prevTrades.findIndex(trade => trade.contract_id === contract_id);
+          if (existingIndex !== -1) {
+            const updatedTrades = [...prevTrades];
+            updatedTrades[existingIndex] = {
+              ...updatedTrades[existingIndex],
+              status,
+              profit,
+            };
+            return updatedTrades;
+          }
+          if (!is_sold) {
+            return [{ buy_price, status, profit: 0, contract_id }, ...prevTrades];
+          }
+          return prevTrades;
+        });
+        setFakeTrades(prevTrades => {
+          const existingIndex = prevTrades.findIndex(trade => trade.contract_id === contract_id);
+          if (existingIndex !== -1) {
+            const updatedTrades = [...prevTrades];
+            updatedTrades[existingIndex] = {
+              ...updatedTrades[existingIndex],
+              status,
+              profit,
+            };
+            return updatedTrades;
+          }
+          if (!is_sold) {
+            return [{ buy_price, status, profit: 0.00, contract_id }, ...prevTrades];
+          }
+          return prevTrades;
+        });
+
+        if (is_sold) {
+          setRunningTrades(prev => Math.max(prev - 1, 0));
+          setShowLiveActionLoader(false);
           if (status === "won") {
-            startMartingale(status)
-            startProfitLossMartingale(status)
-            setLiveAction(`You have ${status} +${profit} USD`)
-            setLiveActionClassName("successInfo")
+            startMartingale(status);
+            startProfitLossMartingale(status);
+            setLiveAction(`You have ${status} +${profit} USD`);
+            setLiveActionClassName("successInfo");
           }
           if (status === "lost") {
-            startMartingale(status)
-            startProfitLossMartingale(status)
-            setLiveAction(`You have ${status} ${profit} USD`)
-            setLiveActionClassName("dangerInfo")
+            startMartingale(status);
+            startProfitLossMartingale(status);
+            setLiveAction(`You have ${status} ${profit} USD`);
+            setLiveActionClassName("dangerInfo");
           }
         }
-        break
+        break;
       case "ping":
         break
       default:
@@ -366,10 +403,12 @@ export const useMessages = ({
           const newSocket = new WebSocket(socketRef.current.url)
           newSocket.onopen = () => {
             console.log("Reconnected successfully.")
-            setLiveAction(`Attempting to reconnect...`)
+            setLiveAction(`Connection restored...`)
             setLiveActionClassName("successInfo")
             setConnected(true)
-            setStopped(false)
+            if (!stopped) {
+              setStopped(false)
+            }
             newSocket.send(JSON.stringify({ ticks: symbol, subscribe: 1 }))
             newSocket.send(JSON.stringify({ balance: 1, subscribe: 1 }))
             // Replace our old socket with the new one
@@ -382,9 +421,12 @@ export const useMessages = ({
           newSocket.onclose = () => {
             console.log("Socket closed during reconnect. Will retry...")
             setLiveAction(`Attempting to reconnect...`)
-            setLiveActionClassName("successInfo")
+            setLiveActionClassName("dangerInfo")
             setConnected(false)
-            setStopped(true)
+            if (!stopped) {
+              setStopped(false)
+            }
+            
           }
           newSocket.onerror = () => {
             console.log("Socket error during reconnect. Closing socket...")
