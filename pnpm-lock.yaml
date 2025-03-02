@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@prisma/cli':
-        specifier: ^2.20.1
-        version: 2.20.1
       '@prisma/client':
         specifier: ^6.4.1
         version: 6.4.1(prisma@6.4.1(typescript@5.4.2))(typescript@5.4.2)
@@ -854,12 +851,6 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@prisma/cli@2.20.1':
-    resolution: {integrity: sha512-/yrNDyNXLETPre/pgXG/L9zER2nINiq+Eq8pALSCApiHZBW1QrksxL9fbbxaseoW6HBs0T4UQWemu378O2mUOw==}
-    engines: {node: '>=10.4'}
-    deprecated: 'Prisma CLI package was renamed to ''prisma''. Check it out here: https://www.npmjs.com/package/prisma'
-    hasBin: true
-
   '@prisma/client@6.4.1':
     resolution: {integrity: sha512-A7Mwx44+GVZVexT5e2GF/WcKkEkNNKbgr059xpr5mn+oUm2ZW1svhe+0TRNBwCdzhfIZ+q23jEgsNPvKD9u+6g==}
     engines: {node: '>=18.18'}
@@ -877,9 +868,6 @@ packages:
 
   '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d':
     resolution: {integrity: sha512-Xq54qw55vaCGrGgIJqyDwOq0TtjZPJEWsbQAHugk99hpDf2jcEeQhUcF+yzEsSqegBaDNLA4IC8Nn34sXmkiTQ==}
-
-  '@prisma/engines@2.20.0-26.60ba6551f29b17d7d6ce479e5733c70d9c00860e':
-    resolution: {integrity: sha512-zOWETm7DTRvlwf/CekPNSeJe6EC5bn2IFexd74wM9zgBXCZo+1sMDuNGtCqIt4Rzv8CcimEgyzrEFVq0LPV8qg==}
 
   '@prisma/engines@6.4.1':
     resolution: {integrity: sha512-KldENzMHtKYwsOSLThghOIdXOBEsfDuGSrxAZjMnimBiDKd3AE4JQ+Kv+gBD/x77WoV9xIPf25GXMWffXZ17BA==}
@@ -3904,10 +3892,6 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@prisma/cli@2.20.1':
-    dependencies:
-      '@prisma/engines': 2.20.0-26.60ba6551f29b17d7d6ce479e5733c70d9c00860e
-
   '@prisma/client@6.4.1(prisma@6.4.1(typescript@5.4.2))(typescript@5.4.2)':
     optionalDependencies:
       prisma: 6.4.1(typescript@5.4.2)
@@ -3916,8 +3900,6 @@ snapshots:
   '@prisma/debug@6.4.1': {}
 
   '@prisma/engines-version@6.4.0-29.a9055b89e58b4b5bfb59600785423b1db3d0e75d': {}
-
-  '@prisma/engines@2.20.0-26.60ba6551f29b17d7d6ce479e5733c70d9c00860e': {}
 
   '@prisma/engines@6.4.1':
     dependencies:
