@@ -4,6 +4,8 @@ import { useState } from "react";
 import Toast from "./Toast";
 import { useToast } from "@/hooks/useToasts";
 import { subscribeUser } from "@/actions/operations";
+import { useSubscription } from "@/contexts/SubscriptionProvider";
+import { useRouter } from "next/navigation"; 
 
 type Package = {
     id: number;
@@ -13,32 +15,19 @@ type Package = {
 };
 
 const Packages: Package[] = [
-    {
-        id: 1,
-        title: "Daily",
-        currency: "KSH",
-        price: 100
-    },
-    {
-        id: 2,
-        title: "Weekly",
-        currency: "KSH",
-        price: 500
-    },
-    {
-        id: 3,
-        title: "Monthly",
-        currency: "KSH",
-        price: 1000
-    }
+    { id: 1, title: "Daily", currency: "KSH", price: 100 },
+    { id: 2, title: "Weekly", currency: "KSH", price: 500 },
+    { id: 3, title: "Monthly", currency: "KSH", price: 1000 }
 ];
 
 export default function Subscribe() {
     const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-    const { toastMessage, toastType, setToastMessage, setToastType } = useToast()
+    const { toastMessage, toastType, setToastMessage, setToastType } = useToast();
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isloading, setIsLoading] = useState(false)
+    const [isloading, setIsLoading] = useState(false);
+    const { isLoggedIn, subscriptionPackage } = useSubscription();
+    const router = useRouter(); // ✅ Initialize router
 
     const handleSubscribe = (pkg: Package) => {
         setSelectedPackage(pkg);
@@ -46,50 +35,46 @@ export default function Subscribe() {
     };
 
     const handleConfirmSubscription = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         const cleanedPhone = phoneNumber.trim();
         const phoneRegex = /^(07|01)\d{8}$/;
         if (!cleanedPhone || !phoneRegex.test(cleanedPhone)) {
             setToastMessage("Please enter a valid 10-digit phone number starting with 07 or 01.");
             setToastType("error");
-            setIsLoading(false)
+            setIsLoading(false);
             return;
         }
 
         const Mypackage = selectedPackage;
-        const data = {
-            phone: cleanedPhone,
-            Mypackage
-        }
-
+        const data = { phone: cleanedPhone, Mypackage };
         const resp = await subscribeUser(data);
-        if (resp) {
-            if (resp.type === "success") {
-                setToastMessage(resp.message);
-                setToastType(resp.type);
-                setIsModalOpen(false);
-                setIsLoading(false)
 
-                setTimeout(() => {
-                    window.location.href = "/login"
-                }, 3000)
-            } else {
-                setToastMessage(resp.message);
-                setToastType(resp.type);
-                setIsModalOpen(true);
-                setIsLoading(false)
-            }
+        if (resp) {
+            setToastMessage(resp.message);
+            setToastType(resp.type);
+            setIsModalOpen(resp.type !== "success");
+            setIsLoading(false);
         }
     };
 
+    if (subscriptionPackage) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen">
+                <h1 className="text-2xl font-semibold text-green-500">Your Current Package is <span className="text-red-500">{subscriptionPackage.package}</span></h1>
+    
+                <button
+                    className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md text-lg hover:bg-green-600 transition"
+                    onClick={() => router.push("/")} 
+                >
+                    Start Trading
+                </button>
+            </div>
+        );
+    }
 
     return (
         <>
-            <Toast
-                message={String(toastMessage)}
-                type={toastType as "success" | "error" | "info"}
-            />
-
+            <Toast message={String(toastMessage)} type={toastType as "success" | "error" | "info"} />
 
             <div className="flex flex-col gap-2 mb-5">
                 <h1 className="bg-gray-500/10 text-2xl font-semibold mb-4 border-l-4 p-2 border-green-500 pl-2 flex items-center rounded-md text-center">
@@ -116,7 +101,6 @@ export default function Subscribe() {
                 </div>
             </div>
 
-
             {/* MODAL */}
             {isModalOpen && selectedPackage && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -124,7 +108,7 @@ export default function Subscribe() {
                         <h2 className="text-2xl font-semibold text-green-500">Confirm Subscription</h2>
                         <p className="text-white mt-2">Package: <span className="font-bold">{selectedPackage.title}</span></p>
                         <p className="text-white">Price: <span className="font-bold">{selectedPackage.price} {selectedPackage.currency}</span></p>
-                        <label className="text-white text-lg font-semibold mt-6" htmlFor="Phone Number">Must be 10 digits.</label>
+                        <label className="text-white text-lg font-semibold mt-6">Must be 10 digits.</label>
                         <input
                             type="tel"
                             placeholder="Enter your phone number"
@@ -145,11 +129,8 @@ export default function Subscribe() {
                                 className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
                                 onClick={handleConfirmSubscription}
                             >
-                                {isloading ?
-                                    "Iniating payment..."
-                                    : "Confirm"}
+                                {isloading ? "Initiating payment..." : "Confirm"}
                             </button>
-
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
 import crypto from "crypto";
+import { DateTime } from "luxon";
 const prisma = new PrismaClient();
 const IntaSend = require('intasend-node');
 
@@ -17,20 +18,25 @@ const ENVIRONMENT = process.env.ENVIRONMENT;
 export async function checkUserSession() {
     try {
         const clientToken = cookies().get("userToken")?.value;
-        console.log("Token:", clientToken);
-
         if (!clientToken) {
             return { isValid: false, message: "No authentication token found." };
         }
+
         const user = await prisma.user.findFirst({ where: { token: clientToken } });
         if (!user) {
             return { isValid: false, message: "User not found.", user: null };
         }
+
         if (user.token !== clientToken) {
             return { isValid: false, message: "Invalid session token." };
         }
-        const now = new Date();
-        if (user.pkgExpiry && new Date(user.pkgExpiry) < now) {
+
+        const now = DateTime.now().setZone("Africa/Nairobi").toMillis();
+        const expiry = user.pkgExpiry 
+            ? DateTime.fromJSDate(user.pkgExpiry).setZone("Africa/Nairobi").toMillis() 
+            : null;
+        
+        if (expiry && expiry < now) {
             await prisma.user.update({
                 where: { phone: user.phone },
                 data: { status: "expired" },
@@ -40,6 +46,7 @@ export async function checkUserSession() {
         }
 
         return { isValid: true, message: "User is authenticated.", user };
+
     } catch (error) {
         console.error("Session Check Error:", error);
         return { isValid: false, message: "Internal server error." };
@@ -52,6 +59,7 @@ export async function loginUser(phone: any) {
         if (!formattedPhone) {
             return { type: "error", message: "Phone number is invalid!" };
         }
+
         const user = await prisma.user.findUnique({
             where: { phone: formattedPhone },
         });
@@ -59,28 +67,43 @@ export async function loginUser(phone: any) {
         if (!user) {
             return { type: "error", message: "User not found" };
         }
+
         if (user.status === "inactive") {
             return { type: "error", message: "Account is inactive!" };
         }
+
         if (user.status === "expired") {
-            return { type: "error", message: "Account is subcription is expired!" };
+            return { type: "error", message: "Subscription is expired!" };
         }
-        const now = new Date();
-        if (user.pkgExpiry && new Date(user.pkgExpiry) < now) {
-            if (user.status !== "expired")
+
+        const now = DateTime.now().setZone("Africa/Nairobi").toMillis();
+        const expiry = user.pkgExpiry 
+            ? DateTime.fromJSDate(user.pkgExpiry).setZone("Africa/Nairobi").toMillis() 
+            : null;
+        
+        if (expiry && expiry < now) {
+            if (user.status !== "expired") {
                 await prisma.user.update({
                     where: { phone: user.phone },
                     data: { status: "expired" },
                 });
+            }
             return { type: "error", message: "Subscription expired!" };
         }
+
         const token = crypto.randomBytes(32).toString("hex");
         await prisma.user.update({
             where: { phone: formattedPhone },
             data: { token },
         });
-        cookies().set("userToken", token, { httpOnly: ENVIRONMENT === "production" ? true : false, secure: ENVIRONMENT === "production" ? true : false });
+
+        cookies().set("userToken", token, { 
+            httpOnly: ENVIRONMENT === "production", 
+            secure: ENVIRONMENT === "production" 
+        });
+
         return { type: "success", message: "Login successful", user };
+
     } catch (error) {
         console.error("Login Error:", error);
         return { type: "error", message: "Internal server error" };
@@ -119,14 +142,15 @@ export async function getMpesaCode(data: any) {
 
 export async function createMpesaCode(data: any) {
     let mpesaCode = null;
+    const now = DateTime.now().setZone("Africa/Nairobi");
     mpesaCode = prisma.mpesaCode.create({
         data: {
             code: data.code,
             phone: data.phone,
             amount: data.amount,
             status: data.status,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            createdAt: now.toJSDate(),
+            updatedAt: now.toJSDate()
         }
     })
     return mpesaCode;
@@ -134,19 +158,21 @@ export async function createMpesaCode(data: any) {
 
 export async function createUser(data: any) {
     let user = null;
+    const now = DateTime.now().setZone("Africa/Nairobi");
     user = prisma.user.create({
         data: {
             phone: data.phone,
             package: data.package,
             status: data.status,
             token: data.token,
-            pkgExpiry: new Date(),
-            pkgCreatedAt: new Date(),
-            pkgUpdatedAt: new Date()
+            pkgExpiry: now.toJSDate(),
+            pkgCreatedAt: now.toJSDate(),
+            pkgUpdatedAt: now.toJSDate()
         }
     })
     return user;
 }
+
 
 export async function deleteUser(data: any) {
     let user = null;
@@ -161,7 +187,6 @@ export async function deleteUser(data: any) {
 export async function subscribeUser(data: any) {
     try {
         const { phone, Mypackage } = data;
-
         const cleanedPhone = await validatePhone(phone);
         if (!cleanedPhone) {
             return {
@@ -171,8 +196,6 @@ export async function subscribeUser(data: any) {
         }
 
         const collection = intasend.collection();
-
-        // Initiate MPesa STK Push request
         const resp = await collection.mpesaStkPush({
             first_name: 'Joe',
             last_name: 'Doe',
@@ -183,37 +206,32 @@ export async function subscribeUser(data: any) {
             api_ref: 'Alphabot Subscription',
         });
 
-        console.log(`STK Push Resp:`, resp);
-
-        // Check if user exists
         let user = await prisma.user.findUnique({
             where: { phone: cleanedPhone },
         });
 
+        const now = DateTime.now().setZone("Africa/Nairobi");
+
         if (!user) {
-            // If user does not exist, create them
             user = await prisma.user.create({
                 data: {
                     phone: cleanedPhone,
                     package: Mypackage.title,
                     status: "inactive",
                     token: "null",
-                    pkgExpiry: new Date(),  // Default expiry (you may want to calculate this)
-                    pkgCreatedAt: new Date(),
-                    pkgUpdatedAt: new Date(),
+                    pkgExpiry: now.toJSDate(),
+                    pkgCreatedAt: now.toJSDate(),
+                    pkgUpdatedAt: now.toJSDate(),
                 },
             });
         } else {
-            console.log(user);
-
-            // If user exists, update them
             user = await prisma.user.update({
                 where: { phone: cleanedPhone },
                 data: {
                     package: Mypackage.title,
-                    status: "inactive",
+                    status: user.status,
                     token: "null",
-                    pkgUpdatedAt: new Date(),
+                    pkgUpdatedAt: now.toJSDate(),
                 },
             });
         }
@@ -224,10 +242,10 @@ export async function subscribeUser(data: any) {
                 phone: resp.invoice.account,
                 amount: resp.invoice.net_amount,
                 status: resp.invoice.state,
-                createdAt: new Date(),
-                updatedAt: new Date()
+                createdAt: now.toJSDate(),
+                updatedAt: now.toJSDate()
             }
-        })
+        });
 
         return { type: "success", message: "Payment request accepted, check phone and enter MPESA Pin", user, response: resp };
     } catch (err: any) {

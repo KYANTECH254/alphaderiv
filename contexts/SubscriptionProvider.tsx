@@ -2,9 +2,8 @@
 
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Cookies } from "react-cookie";
 import { checkUserSession } from "@/actions/operations";
-import { User } from "@/db/types";
+import { getCookies, deleteCookie } from "@/lib/data";
 
 type SubscriptionContextType = {
     isLoggedIn: boolean;
@@ -19,13 +18,12 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [subscriptionPackage, setSubscriptionPackage] = useState<any>();
     const router = useRouter();
-    const cookies = new Cookies();
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
 
         const checkAuth = async () => {
-            const userToken = cookies.get("userToken");
+            const userToken = getCookies();
 
             if (!userToken) {
                 console.log("No token found. Redirecting to login...");
@@ -68,7 +66,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     }, []);
 
     const logout = () => {
-        cookies.remove("userToken");
+        deleteCookie();
         setIsLoggedIn(false);
         setSubscriptionPackage(null);
         router.push("/login");

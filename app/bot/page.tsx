@@ -166,7 +166,7 @@ const GetToken = () => {
                 type={toastType as "success" | "error" | "info"}
             />
 
-            <div className='flexWrap'>
+            <div className='flexWrap mt-5'>
                 <div className='tradeActivityContainer'>
                     <div className='liveActivity'>
                         <div className={`liveOutcome ${liveActionClassName}`}>
@@ -215,7 +215,7 @@ const GetToken = () => {
                         </div>
                     </div>
 
-                    <form className='stakeForm'>
+                    <div className='stakeForm'>
                         <label className='stakeLabel' htmlFor='stake'>
                             Stake
                         </label>
@@ -263,7 +263,7 @@ const GetToken = () => {
                         >
                             {stopped ? "Start" : "Stop"}
                         </button>
-                    </form>
+                    </div>
                 </div>
 
                 <Settings

@@ -8,7 +8,7 @@ export default function Home() {
   const [existingAccounts, setExistingAccounts] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedAccounts = sessionStorage.getItem("accountsUrl");
+    const storedAccounts = localStorage.getItem("accountUrl");
     if (storedAccounts) {
       setExistingAccounts(storedAccounts);
     }
@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className='h-screen flex flex-col gap-2 justify-center items-center font-sans'>
       <Header />
-      <form action='/bot' className="p-5">
+      <form action='/bot' className="p-5 mt-5">
         <h1 className="text-xl font-bold">Login using your Deriv Account</h1>
 
         <div className='flex flex-col'>
@@ -45,15 +45,16 @@ export default function Home() {
             Continue with Deriv
           </button>
         </Link>
-      </form>
 
-      {existingAccounts && (
+        {existingAccounts && (
         <Link href={existingAccounts}>
-          <button className='secondaryButton mt-4'>
-            Existing Accounts
+          <button className='primaryButton flex flex-row items-center justify-center w-full gap-2' type='button'>
+            Continue with Existing Accounts
           </button>
         </Link>
       )}
+      </form>
+
     </div>
   );
 }

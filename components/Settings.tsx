@@ -26,7 +26,6 @@ const Settings: React.FC<SettingsProps> = ({
   setResetDemoBal,
 }) => {
   const { isLoggedIn, subscriptionPackage, logout } = useSubscription();
-
   const [selectedBtn, setSelectedBtn] = useState<string>("first")
   useEffect(() => {
     handleStrategy("first")
@@ -163,6 +162,13 @@ const Settings: React.FC<SettingsProps> = ({
               } ${subscriptionPackage?.package === "Monthly" ? "dangerInfo" : ""}`}
           >
             {subscriptionPackage?.package || "No active subscription"}
+            <div
+              typeof='button'
+              className='logoutBtn'
+              onClick={logout}
+            >
+              Logout
+            </div>
           </div>
           <div className="text-sm font-bold text-red-500">
             {subscriptionPackage?.pkgExpiry ? getTimeLeft(subscriptionPackage.pkgExpiry) : "-"} left

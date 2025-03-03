@@ -3,7 +3,7 @@
 import { AccountsT, useDerivAccount } from "@/hooks/useDerivAccount"
 import Link from "next/link"
 import React, { Suspense, useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
 const Page = () => {
   return (
@@ -46,14 +46,19 @@ const DerivAccounts = () => {
   const DerivAccounts = useDerivAccount()
   const [accounts, setAccounts] = useState<AccountsT[]>(DerivAccounts)
   const pathname = usePathname()
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     sessionStorage.setItem("accounts", JSON.stringify(accounts))
   }, [accounts])
 
   useEffect(() => {
-    localStorage.setItem("accountUrl", pathname)
-  }, [pathname])
+    if (typeof window !== "undefined") {
+      const fullUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+      localStorage.setItem("accountUrl", fullUrl);
+    }
+  }, [pathname, searchParams]);
+
 
   if (accounts.length === 0) {
     return (

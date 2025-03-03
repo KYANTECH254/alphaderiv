@@ -12,6 +12,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
+  overflow-y: auto;
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-start-rgb));
   font-family: "Nunito", sans-serif;
@@ -20,7 +21,7 @@ body {
 form {
   background-color: #222;
   width: 60%;
-  height: 400px;
+  min-height: 400px;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -103,7 +104,7 @@ form {
 }
 
 .mainContainer {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   row-gap: 50px;
@@ -113,7 +114,8 @@ form {
 }
 
 .topNavCard {
-  position: absolute;
+  z-index: 10;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -200,11 +202,13 @@ form {
 
 .stakeForm {
   width: 250px;
-  height: 300px;
+  height: 250px;
   border-radius: 20px;
+  row-gap: 10px;
   background-color: #222;
   color: #cdcdcd;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -382,11 +386,17 @@ input[type="number"] {
 
 .settingsContainer {
   width: 300px;
-  min-height: 400px;
+  max-height: 400px;
   border-radius: 20px;
   background-color: #222;
   overflow-x: auto;
   padding: 1rem;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+.settingsContainer::-webkit-scrollbar {
+  display: none; 
 }
 
 .settingHeader {
@@ -436,6 +446,24 @@ input[type="number"] {
 
 .accountInfo .resetBalBtn:hover {
   border: 2px solid #cdcdcd;
+}
+
+.accountInfo .logoutBtn {
+  height: 30px;
+  width: 120px;
+  border: 1px solid #aa0000;
+  border-radius: 20px;
+  color: #cdcdcd;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ad00003f;
+  cursor: pointer;
+}
+
+.accountInfo .logoutBtn:hover {
+  border: 2px solid #aa0000;
 }
 
 .accountIdInfo {
@@ -523,6 +551,7 @@ input[type="number"] {
   .flexWrap {
     display: flex;
     flex-direction: row;
+    align-items: start;
     column-gap: 50px;
   }
 
@@ -537,6 +566,7 @@ input[type="number"] {
     justify-content: center;
     flex-direction: row;
     column-gap: 20px;
+    padding: 20px;
   }
 
   .liveActivity {
@@ -592,7 +622,7 @@ input[type="number"] {
   form {
     background-color: #222;
     width: 80%;
-    height: 400px;
+    min-height: 400px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -677,4 +707,24 @@ input[type="number"] {
     border-radius: 5px;
     height: 25px;
   }
+}
+
+::-webkit-scrollbar {
+  background-color: var(--background-start-rgb);
+  width: 8px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #22bb33;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background-start-rgb);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #22bb33 var(--background-start-rgb);
 }
