@@ -3,11 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-   url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// prisma/schema.prisma
 model MpesaCode {
   id        Int      @id @default(autoincrement())
   code      String   @unique
