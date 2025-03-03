@@ -10,8 +10,6 @@ const SECRET_CHALLENGE = "Sss333123###kyan";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        console.log("Received M-Pesa Callback:", body);
-
         if (body.challenge !== SECRET_CHALLENGE) {
             return NextResponse.json({ error: "Unauthorized webhook" }, { status: 403 });
         }
