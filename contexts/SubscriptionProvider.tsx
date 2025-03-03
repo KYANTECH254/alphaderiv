@@ -27,6 +27,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
             const userToken = Cookies.get("userToken");
 
             if (!userToken) {
+                console.log("No token found. Redirecting to login...", userToken);
                 setIsLoggedIn(false);
                 setSubscriptionPackage(null);
                 router.push("/login");
@@ -37,6 +38,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
                 const response = await checkUserSession();
 
                 if (!response.isValid || !response.user) {
+                    console.log("Session invalid:", response.message);
                     Cookies.remove("userToken");
                     setIsLoggedIn(false);
                     setSubscriptionPackage(null);
@@ -44,6 +46,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
                     return;
                 }
 
+                console.log("✅ User session valid:", response.user);
                 setSubscriptionPackage(response.user ?? null);
                 setIsLoggedIn(true);
             } catch (error) {
@@ -57,6 +60,7 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         checkAuth();
 
         interval = setInterval(() => {
+            console.log("🔄 Rechecking session...");
             checkAuth();
         }, 30000);
 
