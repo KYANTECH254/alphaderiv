@@ -4,7 +4,7 @@ import { useState } from "react";
 import Toast from "./Toast";
 import { useToast } from "@/hooks/useToasts";
 import { subscribeUser } from "@/actions/operations";
-import { spawn } from "child_process";
+import { useRouter } from "next/router";
 
 type Package = {
     id: number;
@@ -40,6 +40,7 @@ export default function Subscribe() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false)
+    const router = useRouter();
 
     const handleSubscribe = (pkg: Package) => {
         setSelectedPackage(pkg);
@@ -64,12 +65,22 @@ export default function Subscribe() {
         }
 
         const resp = await subscribeUser(data);
-        console.log("Backend data:", resp);
         if (resp) {
-            setToastMessage(resp.message);
-            setToastType(resp.type);
-            setIsModalOpen(false);
-            setIsLoading(false)
+            if (resp.type === "success") {
+                setToastMessage(resp.message);
+                setToastType(resp.type);
+                setIsModalOpen(false);
+                setIsLoading(false)
+
+                setTimeout(() => {
+                    router.push("/login")
+                }, 3000)
+            } else {
+                setToastMessage(resp.message);
+                setToastType(resp.type);
+                setIsModalOpen(true);
+                setIsLoading(false)
+            }
         }
     };
 

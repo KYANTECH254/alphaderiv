@@ -3,6 +3,7 @@
 import { AccountsT, useDerivAccount } from "@/hooks/useDerivAccount"
 import Link from "next/link"
 import React, { Suspense, useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 
 const Page = () => {
   return (
@@ -44,10 +45,15 @@ function getAccountTypeClass(code: any) {
 const DerivAccounts = () => {
   const DerivAccounts = useDerivAccount()
   const [accounts, setAccounts] = useState<AccountsT[]>(DerivAccounts)
+  const pathname = usePathname()
 
   useEffect(() => {
     sessionStorage.setItem("accounts", JSON.stringify(accounts))
   }, [accounts])
+
+  useEffect(() => {
+    localStorage.setItem("accountUrl", pathname)
+  }, [pathname])
 
   if (accounts.length === 0) {
     return (
