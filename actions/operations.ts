@@ -1,10 +1,9 @@
 "use server"
 
-import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { DateTime } from "luxon";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 const IntaSend = require('intasend-node');
 
 let intasend = new IntaSend(

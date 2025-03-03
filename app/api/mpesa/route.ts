@@ -1,11 +1,10 @@
 "use server";
 import { NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { DateTime } from "luxon"; 
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 const SECRET_CHALLENGE = "Sss333123###kyan"; 
 
 export async function POST(req: Request) {
