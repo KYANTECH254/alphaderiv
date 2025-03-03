@@ -4,7 +4,6 @@ import { useState } from "react";
 import Toast from "./Toast";
 import { useToast } from "@/hooks/useToasts";
 import { subscribeUser } from "@/actions/operations";
-import { useRouter } from "next/router";
 
 type Package = {
     id: number;
@@ -40,7 +39,6 @@ export default function Subscribe() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false)
-    const router = useRouter();
 
     const handleSubscribe = (pkg: Package) => {
         setSelectedPackage(pkg);
@@ -73,7 +71,7 @@ export default function Subscribe() {
                 setIsLoading(false)
 
                 setTimeout(() => {
-                    router.push("/login")
+                    window.location.href = "/login"
                 }, 3000)
             } else {
                 setToastMessage(resp.message);
