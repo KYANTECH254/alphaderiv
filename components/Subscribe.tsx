@@ -99,7 +99,7 @@ export default function Subscribe() {
     return (
         <>
             <div className="flex flex-col gap-5 mb-5">
-                <div className="flex flex-col gap-2 items-center justify-center">
+                <div className="flex flex-col gap-2 items-center justify-center mt-5">
                     <h1 className="text-center text-xl font-semibold">Already have a Subscription Package ?</h1>
                     <span onClick={() => router.push("/login")} className="cursor-pointer text-xl text-green-500 underline hover:text-2xl text-center flex flex-row items-center">Login <ArrowRight /></span>
                 </div>

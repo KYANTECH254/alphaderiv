@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { myPref } from "@/lib/Preferences";
 import Link from "next/link";
+import HelpButton from "@/components/Help";
 
 export default function Home() {
   const [existingAccounts, setExistingAccounts] = useState<string | null>(null);
@@ -47,14 +48,14 @@ export default function Home() {
         </Link>
 
         {existingAccounts && (
-        <Link href={existingAccounts}>
-          <button className='primaryButton flex flex-row items-center justify-center w-full gap-2' type='button'>
-            Continue with Existing Accounts
-          </button>
-        </Link>
-      )}
+          <Link href={existingAccounts}>
+            <button className='primaryButton flex flex-row items-center justify-center w-full gap-2' type='button'>
+              Continue with Existing Accounts
+            </button>
+          </Link>
+        )}
       </form>
-
+      {/* <HelpButton phoneNumber="0723551116" /> */}
     </div>
   );
 }
