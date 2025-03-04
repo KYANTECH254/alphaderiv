@@ -2,8 +2,10 @@
 
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { io } from "socket.io-client";
 import { checkUserSession } from "@/actions/operations";
 import { getCookies, deleteCookie } from "@/lib/data";
+import { toast } from "sonner";
 
 type SubscriptionContextType = {
     isLoggedIn: boolean;
@@ -21,14 +23,15 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
+        let path = window.location.pathname;
 
         const checkAuth = async () => {
             const userToken = getCookies();
 
             if (!userToken) {
-                console.log("No token found. Redirecting to login...");
                 setIsLoggedIn(false);
                 setSubscriptionPackage(null);
+                if (path.includes("/login") || path.includes("/subscribe")) return;
                 router.push("/login");
                 return;
             }
@@ -37,20 +40,19 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
                 const response = await checkUserSession();
 
                 if (!response.isValid || !response.user) {
-                    console.log("Session invalid:", response.message);
                     setIsLoggedIn(false);
                     setSubscriptionPackage(null);
+                    if (path.includes("/login") || path.includes("/subscribe")) return;
                     router.push("/login");
                     return;
                 }
 
-                console.log("✅ User session valid:", response.user);
                 setSubscriptionPackage(response.user ?? null);
                 setIsLoggedIn(true);
             } catch (error) {
-                console.error("Error checking user session:", error);
                 setIsLoggedIn(false);
                 setSubscriptionPackage(null);
+                if (path.includes("/login") || path.includes("/subscribe")) return;
                 router.push("/login");
             }
         };
@@ -58,11 +60,44 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
         checkAuth();
 
         interval = setInterval(() => {
-            console.log("🔄 Rechecking session...");
             checkAuth();
         }, 30000);
 
         return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const socket = io({
+            path: "/api/socket",
+            transports: ["websocket", "polling"],
+        });
+
+        socket.on("connect", () => {
+            console.log("Connected to WebSocket", socket.id);
+        });
+
+        socket.on("payment_update", (data: any) => {
+            if (data.paid) {
+                toast.success("Payment received. Redirecting...", {
+                    duration: 5000,
+                    classNames: {
+                        toast: 'toast-success',
+                    }
+                });
+                router.push("/");
+            } else if (!data.paid) {
+                toast.error("Payment failed, try again!", {
+                    duration: 5000,
+                    classNames: {
+                        toast: 'toast-error',
+                    }
+                });
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     const logout = () => {

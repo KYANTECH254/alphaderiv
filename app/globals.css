@@ -728,3 +728,34 @@ input[type="number"] {
   scrollbar-width: thin;
   scrollbar-color: #22bb33 var(--background-start-rgb);
 }
+
+.accounts-box {
+  width: 200px;
+  height: 40px;
+  border: 2px solid var(--secondary-green);
+  background-color: #29a80971;
+  border-radius: 10px;
+  font-weight: 900;
+  color: var(--primary-white-color);
+  cursor: pointer;
+}
+
+.accounts-box:hover {
+  background-color: #29a809a2;
+}
+
+.accounts-box.selected {
+  width: 200px;
+  height: 40px;
+  border: 2px solid var(--primary-color);
+  background-color: #88888852;
+  border-radius: 10px;
+  font-weight: 900;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}

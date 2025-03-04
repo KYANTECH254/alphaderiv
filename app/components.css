@@ -160,9 +160,46 @@
 
 .toast.info {
   border: 2px solid #f0ad4e;
+  color: #fff;
   background-color: #f0ac4e64;
 }
 
+.toast-error {
+  display: flex !important;
+  flex-direction: row !important;
+  border: 2px solid #ff3333 !important;
+  background-color: #ff33335a !important;;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  column-gap:10px !important;
+}
+
+.toast-success {
+  display: flex !important;
+  flex-direction: row !important;
+  border: 2px solid #22bb33 !important;
+  background-color: #22bb347b !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  column-gap:10px !important;
+}
+
+.toast-info {
+  display: flex !important;
+  flex-direction: row !important;
+  border: 2px solid #f0ad4e !important;
+  background-color: #f0ac4e64 !important;;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  column-gap:10px !important;
+}
+.close-button {
+  background-color: inherit !important;
+  color: inherit !important;
+}
 /**
  * ==============================================
  * Nav Drop down

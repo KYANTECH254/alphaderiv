@@ -1,15 +1,12 @@
 "use client"
 import { myPref } from "@/lib/Preferences"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 export const useWebsokets = ({
   token,
-  setToastMessage,
-  setToastType,
 }: {
   token: string
-  setToastMessage: Dispatch<SetStateAction<any>>
-  setToastType: Dispatch<SetStateAction<any>>
 }) => {
   const [messages, setMessages] = useState()
   const [connected, setConnected] = useState(false)
@@ -48,17 +45,29 @@ export const useWebsokets = ({
 
       ws.onclose = function (event) {
         if (event.wasClean) {
-          setToastMessage(`[close] Connection closed cleanly`)
-          setToastType("success")
+          toast.success("[close] Connection closed cleanly", {
+            duration: 5000,
+            classNames: {
+              toast: 'toast-success',
+            }
+          });
         } else {
-          setToastMessage(`[close] Connection died`)
-          setToastType("error")
+          toast.error("[close] Connection died", {
+            duration: 5000,
+            classNames: {
+              toast: 'toast-error',
+            }
+          });
         }
       }
 
       ws.onerror = function (error) {
-        setToastMessage(error)
-        setToastType("error")
+        // toast.error(`${error}`, {
+        //   duration: 5000,
+        //   classNames: {
+        //     toast: 'toast-error',
+        //   }
+        // });
         console.log(error)
       }
 

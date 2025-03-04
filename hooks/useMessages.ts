@@ -6,6 +6,7 @@ import {
   fourthStrategy,
   secondStrategy,
 } from "./useStrategy"
+import { toast } from "sonner"
 
 interface Trade {
   buy_price: number
@@ -21,8 +22,6 @@ export const useMessages = ({
   setLiveAction,
   setLiveActionClassName,
   setShowLiveActionLoader,
-  setToastMessage,
-  setToastType,
 }: {
   messages: any
   socket: WebSocket
@@ -30,8 +29,6 @@ export const useMessages = ({
   setLiveAction: Dispatch<SetStateAction<any>>
   setLiveActionClassName: Dispatch<SetStateAction<any>>
   setShowLiveActionLoader: Dispatch<SetStateAction<any>>
-  setToastMessage: Dispatch<SetStateAction<any>>
-  setToastType: Dispatch<SetStateAction<any>>
 }) => {
   // Local states for bot, stakes, trades, etc.
   const [account, setAccount] = useState<any>()
@@ -92,10 +89,12 @@ export const useMessages = ({
         setStopped(true)
         setTotalStopsProfit(0)
         setFakeTrades([])
-        setToastMessage(
-          `Stop Loss ${trimToTwoDecimals(totalstopsProfit)} USD`
-        )
-        setToastType("error")
+        toast.error(`Stop Loss ${trimToTwoDecimals(totalstopsProfit)} USD`, {
+          duration: 5000,
+          classNames: {
+            toast: 'toast-error',
+          }
+        });
         return
       }
       if (takeProfit !== 0 && totalstopsProfit >= takeProfit) {
@@ -103,10 +102,12 @@ export const useMessages = ({
         setStopped(true)
         setTotalStopsProfit(0)
         setFakeTrades([])
-        setToastMessage(
-          `Take Profit +${trimToTwoDecimals(totalstopsProfit)} USD`
-        )
-        setToastType("success")
+        toast.success(`Take Profit +${trimToTwoDecimals(totalstopsProfit)} USD`, {
+          duration: 5000,
+          classNames: {
+              toast: 'toast-success',
+          }
+      });
         return
       }
     }

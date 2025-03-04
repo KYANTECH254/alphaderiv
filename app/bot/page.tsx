@@ -2,13 +2,13 @@
 
 import NavSubMenu from "@/components/NavSubMenu"
 import Settings from "@/components/Settings"
-import Toast from "@/components/Toast"
 import { useGetQueryParams } from "@/hooks/useGetQueryParams"
 import { useLiveActionMessage } from "@/hooks/useLiveActionMessage"
 import { useMessages } from "@/hooks/useMessages"
 import { useToast } from "@/hooks/useToasts"
 import { useWebsokets } from "@/hooks/useWebsokets"
 import { ChangeEvent, Suspense } from "react"
+import { toast } from "sonner"
 
 const page = () => {
     return (
@@ -20,11 +20,8 @@ const page = () => {
 
 const GetToken = () => {  
     const { token } = useGetQueryParams()
-    const { toastMessage, toastType, setToastMessage, setToastType } = useToast()
     const { connected, setConnected, messages, socket } = useWebsokets({
-        token,
-        setToastMessage,
-        setToastType,
+        token
     })
     const {
         liveAction,
@@ -64,9 +61,7 @@ const GetToken = () => {
         setConnected,
         setLiveAction,
         setLiveActionClassName,
-        setShowLiveActionLoader,
-        setToastMessage,
-        setToastType,
+        setShowLiveActionLoader
     })
 
     const handleStakeInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -124,18 +119,30 @@ const GetToken = () => {
 
     const handleBot = () => {
         if (account?.balance < stake) {
-            setToastMessage("Insufficient balance")
-            setToastType("error")
+            toast.error("Insufficient balance", {
+                duration: 5000,
+                classNames: {
+                    toast: 'toast-error',
+                }
+            });
             setStopped(true)
             return
         }
         if (!stopped) {
-            setToastMessage("Bot stopped")
-            setToastType("info")
+            toast.info("Bot stopped", {
+                duration: 5000,
+                classNames: {
+                    toast: 'toast-info',
+                }
+            });
             setStakes([])
         } else {
-            setToastMessage("Bot started")
-            setToastType("success")
+            toast.success("Bot started", {
+                duration: 5000,
+                classNames: {
+                    toast: 'toast-success',
+                }
+            });
             setStakes([])
         }
         setStopped(prevData => !prevData)
@@ -160,11 +167,6 @@ const GetToken = () => {
 
                 <NavSubMenu data={account}></NavSubMenu>
             </div>
-
-            <Toast
-                message={String(toastMessage)}
-                type={toastType as "success" | "error" | "info"}
-            />
 
             <div className='flexWrap mt-5'>
                 <div className='tradeActivityContainer'>
@@ -271,8 +273,6 @@ const GetToken = () => {
                     setProfitLossMartingaleState={setProfitLossMartingale}
                     profitlossmartingale={profitlossmartingale}
                     setMartingaleState={setMartingale}
-                    setToastMessage={setToastMessage}
-                    setToastType={setToastType}
                     martingale={martingale}
                     setStrategy={setStrategy}
                     setSymbol={setSymbol}

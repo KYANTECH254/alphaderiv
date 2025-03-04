@@ -22,13 +22,13 @@ export default function Home() {
 
         <div className='flex flex-col'>
           <label className='formLabel' htmlFor='token'>
-            Token
+            Deriv Token
           </label>
           <input
             className='formInput'
             type='text'
             name='token'
-            placeholder='Enter token'
+            placeholder='Enter deriv token'
             required
           />
         </div>

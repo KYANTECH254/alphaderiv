@@ -172,7 +172,6 @@ export async function createUser(data: any) {
     return user;
 }
 
-
 export async function deleteUser(data: any) {
     let user = null;
     user = prisma.user.delete({
@@ -220,16 +219,6 @@ export async function subscribeUser(data: any) {
                     token: "null",
                     pkgExpiry: now.toJSDate(),
                     pkgCreatedAt: now.toJSDate(),
-                    pkgUpdatedAt: now.toJSDate(),
-                },
-            });
-        } else {
-            user = await prisma.user.update({
-                where: { phone: cleanedPhone },
-                data: {
-                    package: Mypackage.title,
-                    status: user.status,
-                    token: "null",
                     pkgUpdatedAt: now.toJSDate(),
                 },
             });

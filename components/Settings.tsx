@@ -1,12 +1,14 @@
 "use client"
 import { useSubscription } from "@/contexts/SubscriptionProvider"
-import React, { useEffect, useState } from "react"
+import { ArrowLeftRightIcon } from "lucide-react"
+import React, { use, useEffect, useState } from "react"
+import Accounts from "./Accounts"
+import { toast } from "sonner"
+import { getAccountTypeClass, getAccountType, getCode } from "@/lib/Functions"
 interface SettingsProps {
   data: any
   setMartingaleState: (newValue: boolean) => void
   setProfitLossMartingaleState: (newValue: boolean) => void
-  setToastMessage: (newValue: any) => void
-  setToastType: (newValue: any) => void
   martingale: boolean
   profitlossmartingale: boolean
   setStrategy: any
@@ -17,8 +19,6 @@ const Settings: React.FC<SettingsProps> = ({
   data,
   setMartingaleState,
   setProfitLossMartingaleState,
-  setToastMessage,
-  setToastType,
   martingale,
   profitlossmartingale,
   setStrategy,
@@ -27,44 +27,31 @@ const Settings: React.FC<SettingsProps> = ({
 }) => {
   const { isLoggedIn, subscriptionPackage, logout } = useSubscription();
   const [selectedBtn, setSelectedBtn] = useState<string>("first")
+  const [accountsModal, setAccountsModalOpen] = useState<boolean>(false)
   useEffect(() => {
     handleStrategy("first")
   }, [])
-  function getAccountType(code: any) {
-    let type
-    let str = code
-    let trimmedStr = str.substring(0, 2)
-    if (trimmedStr === "CR") {
-      return (type = "Real")
-    }
-    if (trimmedStr === "VR") {
-      return (type = "Demo")
-    }
-    return (type = "Unknown")
-  }
-  function getAccountTypeClass(code: any) {
-    let cssClass
-    let str = code
-    let trimmedStr = str.substring(0, 2)
-    if (trimmedStr === "CR") {
-      return (cssClass = "successInfo")
-    }
-    if (trimmedStr === "VR") {
-      return (cssClass = "warningInfo")
-    }
-  }
+
   const handleOncheckedMartingale = () => {
     if (profitlossmartingale) {
       setProfitLossMartingaleState(false)
     }
     if (!martingale) {
       setMartingaleState(true)
-      setToastMessage("Martingale enabled")
-      setToastType("success")
+      toast.success("Martingale enabled", {
+        duration: 5000,
+        classNames: {
+          toast: 'toast-success',
+        }
+      });
     } else {
       setMartingaleState(false)
-      setToastMessage("Martingale disabled")
-      setToastType("info")
+      toast.info("Martingale disabled", {
+        duration: 5000,
+        classNames: {
+          toast: 'toast-info',
+        }
+      });
     }
   }
   const handleOncheckedProfitLossMartingale = () => {
@@ -73,12 +60,20 @@ const Settings: React.FC<SettingsProps> = ({
     }
     if (!profitlossmartingale) {
       setProfitLossMartingaleState(true)
-      setToastMessage("Bothways Martingale enabled")
-      setToastType("success")
+      toast.success("Bothways Martingale enabled", {
+        duration: 5000,
+        classNames: {
+          toast: 'toast-success',
+        }
+      });
     } else {
       setProfitLossMartingaleState(false)
-      setToastMessage("Bothways Martingale disabled")
-      setToastType("info")
+      toast.info("Bothways Martingale disabled", {
+        duration: 5000,
+        classNames: {
+          toast: 'toast-info',
+        }
+      });
     }
   }
   const handleStrategy = (strategy: string) => {
@@ -101,12 +96,21 @@ const Settings: React.FC<SettingsProps> = ({
       default:
         toastMessage = ""
     }
-    setToastMessage(toastMessage)
-    setToastType("success")
+
+    toast.success(toastMessage, {
+      duration: 5000,
+      classNames: {
+        toast: 'toast-success',
+      }
+    });
   }
   const handleBalanceResetBtn = () => {
-    setToastMessage("Demo balance reset")
-    setToastType("success")
+    toast.success("Demo balance reset", {
+      duration: 5000,
+      classNames: {
+        toast: 'toast-success',
+      }
+    });
     setResetDemoBal(true)
   }
   const getTimeLeft = (expiry: Date | string) => {
@@ -136,8 +140,13 @@ const Settings: React.FC<SettingsProps> = ({
     <div className='settingsContainer'>
       <div className='settingHeader'>Settings</div>
       <div className='accountInfo'>
-        <div className={`accountTypeInfo ${getAccountTypeClass(data.loginid)}`}>
+        <div className={`flex flex-row items-center accountTypeInfo ${getAccountTypeClass(data.loginid)}`}>
           {getAccountType(data.loginid)}
+          <div
+            onClick={() => {
+              setAccountsModalOpen(true)
+            }}
+            className="sm:hidden hover:animate-spin text-white bg-gray-300/40 w-7 h-7 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-400 border border-white"><ArrowLeftRightIcon size={16} /></div>
           {getAccountType(data.loginid) === "Demo" ? (
             <div
               typeof='button'
@@ -150,7 +159,7 @@ const Settings: React.FC<SettingsProps> = ({
         </div>
 
         <div className='accountIdInfo dangerInfo'>
-          {data.loginid} ({data.currency})
+          {getCode(data.loginid)} ({data.currency})
         </div>
       </div>
       <div className='settingsContainerTitle2 mt-1'>Subscription</div>
@@ -232,6 +241,14 @@ const Settings: React.FC<SettingsProps> = ({
         <div className="tradeHistoryInfo lostTradeInfo p-2 items-center">Lost</div>
         <div className="tradeHistoryInfo runningTradeInfo p-2 items-center">Open</div>
       </div>
+
+      {accountsModal && (
+        <Accounts
+          onClose={() => { setAccountsModalOpen(false) }}
+          activeAccount={data.loginid}
+        />
+      )}
+
     </div>
   )
 }
