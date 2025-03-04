@@ -85,9 +85,9 @@ export const useMessages = ({
         faketrades.reduce((acc, trade) => acc + trade.profit, 0)
       )
       if (stopLoss !== 0 && totalstopsProfit <= -stopLoss) {
-        setStakeValue(defaultStake)
         setStopped(true)
         setTotalStopsProfit(0)
+        setStakeValue(firstStake)
         setFakeTrades([])
         toast.error(`Stop Loss ${trimToTwoDecimals(totalstopsProfit)} USD`, {
           duration: 5000,
@@ -98,9 +98,9 @@ export const useMessages = ({
         return
       }
       if (takeProfit !== 0 && totalstopsProfit >= takeProfit) {
-        setStakeValue(defaultStake)
         setStopped(true)
         setTotalStopsProfit(0)
+        setStakeValue(firstStake)
         setFakeTrades([])
         toast.success(`Take Profit +${trimToTwoDecimals(totalstopsProfit)} USD`, {
           duration: 5000,

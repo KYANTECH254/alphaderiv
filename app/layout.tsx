@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { SubscriptionProvider } from "@/contexts/SubscriptionProvider"
 import { Toaster } from 'sonner'
 import { AlertTriangleIcon, Check, InfoIcon, X } from "lucide-react"
+import { NetworkProvider } from "@/contexts/NetworkProvider"
 
 export const metadata: Metadata = {
   title: "Alphabot Deriv",
@@ -93,7 +94,9 @@ export default function RootLayout({
           closeButton
         />
         <SubscriptionProvider>
+          <NetworkProvider>
           {children}
+          </NetworkProvider>
         </SubscriptionProvider>
       </body>
     </html>
