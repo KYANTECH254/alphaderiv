@@ -1,13 +1,7 @@
-import { NextApiRequest } from "next";
-import { Server as HttpServer } from "http";
-import { initSocket } from "@/lib/socket";
+import { NextResponse } from "next/server";
+import { getSocketInstance } from "@/lib/socket";
 
-export default function handler(req: NextApiRequest, res: any) {
-    if (!res.socket.server.io) {
-        console.log("Initializing WebSocket...");
-        initSocket(res.socket.server as HttpServer);
-        res.socket.server.io = true;
-    }
-
-    res.end();
+export async function GET(req: Request) {
+    getSocketInstance();
+    return NextResponse.json({ message: "Socket server initialized" });
 }
