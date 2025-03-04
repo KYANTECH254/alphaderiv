@@ -1,5 +1,6 @@
 "use client";
 
+import { getCode } from "@/lib/Functions";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
@@ -55,11 +56,11 @@ export default function Accounts({ onClose, activeAccount }: any) {
                     ) : (
                         storedAccounts.map((account) => (
                             <div
-                                key={account.code}
-                                className={`accounts-box flex items-center justify-center text-sm ${selectedAccount === account.code ? "selected" : ""}`}
+                                key={getCode(account.code)}
+                                className={`accounts-box flex items-center justify-center text-sm ${selectedAccount === getCode(account.code) ? "selected" : ""}`}
                                 onClick={() => handleAccountClick(account)}
                             >
-                                {account.code} {account.currency}
+                                {getCode(account.code)} {account.currency}
                             </div>
                         ))
                     )}

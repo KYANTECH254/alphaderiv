@@ -105,9 +105,9 @@ export const useMessages = ({
         toast.success(`Take Profit +${trimToTwoDecimals(totalstopsProfit)} USD`, {
           duration: 5000,
           classNames: {
-              toast: 'toast-success',
+            toast: 'toast-success',
           }
-      });
+        });
         return
       }
     }
