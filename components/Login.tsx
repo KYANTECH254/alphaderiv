@@ -32,7 +32,7 @@ export default function Login() {
             setIsLoading(false);
 
             if (response.type === "success") {
-                toast.success("Login successful! Redirecting...", {
+                toast.success(response.message, {
                     duration: 5000,
                     classNames: {
                         toast: 'toast-success',
