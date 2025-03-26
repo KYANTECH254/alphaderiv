@@ -75,7 +75,7 @@ export default function Login() {
             </div>
 
             <button
-                className="h-12 w-full text-white rounded-md font-bold text-lg bg-green-500 hover:bg-green-600"
+                className="h-12 w-full text-white rounded-md font-bold text-lg bg-green-600 hover:bg-green-700"
                 type="submit"
             >
                 {isLoading ? "Logging in..." : "Login to your account"}
@@ -83,7 +83,7 @@ export default function Login() {
 
             <h2>Don't have a package?</h2>
             <Link href="/subscribe">
-                <button className="h-12 w-full text-white rounded-md font-bold text-lg bg-red-500 hover:bg-red-600">
+                <button className="h-12 w-full text-white rounded-md font-bold text-lg bg-red-600 hover:bg-red-700">
                     Subscribe to a package
                 </button>
             </Link>

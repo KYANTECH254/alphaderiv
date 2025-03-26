@@ -158,7 +158,7 @@ const Settings: React.FC<SettingsProps> = ({
           ) : null}
         </div>
 
-        <div className='accountIdInfo dangerInfo'>
+        <div className='accountIdInfo warningInfo'>
           {getCode(data.loginid)} ({data.currency})
         </div>
       </div>
@@ -166,9 +166,7 @@ const Settings: React.FC<SettingsProps> = ({
       {isLoggedIn && (
         <div className='accountInfo'>
           <div
-            className={`accountTypeInfo ${subscriptionPackage?.package === "Daily" ? "successInfo" : ""
-              } ${subscriptionPackage?.package === "Weekly" ? "warningInfo" : ""
-              } ${subscriptionPackage?.package === "Monthly" ? "dangerInfo" : ""}`}
+            className={`accountTypeInfo successInfo`}
           >
             {subscriptionPackage?.package || "No active subscription"}
             <div
@@ -179,7 +177,7 @@ const Settings: React.FC<SettingsProps> = ({
               Logout
             </div>
           </div>
-          <div className="text-sm font-bold text-red-500">
+          <div className="text-sm font-bold warningInfo">
             {subscriptionPackage?.pkgExpiry ? getTimeLeft(subscriptionPackage.pkgExpiry) : "-"} left
           </div>
 

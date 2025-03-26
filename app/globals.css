@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
 }
 
 body {
@@ -17,6 +25,8 @@ body {
   background: rgb(var(--background-start-rgb));
   font-family: "Nunito", sans-serif;
 }
+
+
 
 form {
   background-color: #222;
@@ -451,19 +461,20 @@ input[type="number"] {
 .accountInfo .logoutBtn {
   height: 30px;
   width: 120px;
-  border: 1px solid #aa0000;
+  border: 1px solid #30aa00;
   border-radius: 20px;
   color: #cdcdcd;
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ad00003f;
+  background-color: #30aa0041;
   cursor: pointer;
 }
 
 .accountInfo .logoutBtn:hover {
   border: 2px solid #aa0000;
+  background-color: #ad00003f;
 }
 
 .accountIdInfo {

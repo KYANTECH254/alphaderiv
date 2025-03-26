@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import LogoutButton from "./LogoutButton"
+import { getCode } from "@/lib/Functions"
 
 interface NavSubMenuProps {
   data: any
@@ -28,7 +29,7 @@ const NavSubMenu: React.FC<NavSubMenuProps> = ({ data }) => {
     <nav className='navMenu'>
       <label htmlFor='navTitleText' onClick={toggleMenu}>
         <div className='navTitleText'>
-          {data.loginid} ({data.currency})
+          {getCode(data.loginid)} ({data.currency})
         </div>
       </label>
 
@@ -38,13 +39,13 @@ const NavSubMenu: React.FC<NavSubMenuProps> = ({ data }) => {
       >
         <div className='navMenuTitle'>My Accounts</div>
         {existing_accounts.map((account: any) => (
-          <li key={account.token || account.loginid}>
+          <li key={account.token || getCode(account.loginid)}>
             {account.token ? (
               <a href={`bot?token=${account.token}`}>
-                {`${account.code} ${account.currency}`}
+                {`${getCode(account.code)} ${account.currency}`}
               </a>
             ) : (
-              <span>{`${account.loginid} ${account.currency}`}</span>
+              <span>{`${getCode(account.loginid)} ${account.currency}`}</span>
             )}
           </li>
         ))}
