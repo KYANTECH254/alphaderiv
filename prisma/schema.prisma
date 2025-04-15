@@ -1,5 +1,8 @@
+// prisma/schema.prisma
 generator client {
-  provider = "prisma-client-js"
+  provider     = "prisma-client"           // no `-js` at the end
+  output       = "../src/generated/prisma" // `output` is required
+  moduleFormat = "esm"                     // or `"cjs"` for CommonJS
 }
 
 datasource db {

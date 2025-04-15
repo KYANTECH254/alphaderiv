@@ -70,7 +70,7 @@ export async function POST(req: Request) {
                 }
 
                 const token = crypto.randomBytes(32).toString("hex");
-                cookies().set("userToken", token, { httpOnly: true, secure: true });
+                (await cookies()).set("userToken", token, { httpOnly: true, secure: true });
 
                 await prisma.user.update({
                     where: { phone: formattedPhone },
