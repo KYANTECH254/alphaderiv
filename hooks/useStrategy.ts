@@ -1,5 +1,16 @@
 "use client"
 import { Dispatch, SetStateAction } from "react"
+const countConsecutiveDigits = (asset: number[]) => {
+  let consecutiveCount = 0;
+  for (let i = asset.length - 1; i >= 0; i--) {
+    if (asset[i] <= 3) {
+      consecutiveCount++;
+    } else {
+      break;
+    }
+  }
+  return consecutiveCount;
+};
 export function firstStrategy(
   stopped: boolean,
   runningTrades: number,
@@ -13,8 +24,8 @@ export function firstStrategy(
   sendMsg: (msg: any) => void,
   setDefaultStake: Dispatch<SetStateAction<number>>
 ) {
-  const count = asset.filter(digit => digit <= 3).length
-  if (count === asset.length) {
+  const consecutiveDigitsCount = countConsecutiveDigits(asset);
+  if (consecutiveDigitsCount >= 1) {
     setLiveAction("Trading signal acquired, placing trade")
     setShowLiveActionLoader(true)
     setLiveActionClassName("successInfo")
@@ -59,9 +70,8 @@ export function secondStrategy(
   sendMsg: (msg: any) => void,
   setDefaultStake: Dispatch<SetStateAction<number>>
 ) {
-  const count = asset.filter(digit => digit <= 3).length
-
-  if (count === asset.length) {
+  // const consecutiveDigitsCount = countConsecutiveDigits(asset);
+  // if (consecutiveDigitsCount >= 0) {
     setLiveAction("Trading signal acquired, placing trade")
     setShowLiveActionLoader(true)
     setLiveActionClassName("successInfo")
@@ -91,7 +101,7 @@ export function secondStrategy(
       }
       return updatedStake
     })
-  }
+  // }
 }
 export function fourthStrategy(
   stopped: boolean,

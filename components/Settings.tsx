@@ -26,11 +26,30 @@ const Settings: React.FC<SettingsProps> = ({
   setResetDemoBal,
 }) => {
   const { isLoggedIn, subscriptionPackage, logout } = useSubscription();
-  const [selectedBtn, setSelectedBtn] = useState<string>("first")
+  const [selectedBtn, setSelectedBtn] = useState<string>("")
   const [accountsModal, setAccountsModalOpen] = useState<boolean>(false)
   useEffect(() => {
-    handleStrategy("first")
-  }, [])
+    const savedStrategy = localStorage.getItem("strategy") || "second";
+    const savedMartingale = localStorage.getItem("martingale") === "true";
+    const savedProfitLossMartingale = localStorage.getItem("profitlossmartingale") === "true";
+  
+    setStrategy(savedStrategy);
+    setSelectedBtn(savedStrategy);
+    setMartingaleState(savedMartingale);
+    setProfitLossMartingaleState(savedProfitLossMartingale);
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem("strategy", selectedBtn);
+  }, [selectedBtn]);
+  
+  useEffect(() => {
+    localStorage.setItem("martingale", String(martingale));
+  }, [martingale]);
+  
+  useEffect(() => {
+    localStorage.setItem("profitlossmartingale", String(profitlossmartingale));
+  }, [profitlossmartingale]);
 
   const handleOncheckedMartingale = () => {
     if (profitlossmartingale) {

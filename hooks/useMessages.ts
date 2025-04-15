@@ -293,28 +293,23 @@ export const useMessages = ({
       case "history":
         break
       case "tick":
-        let currentArrayToBeUsed = strategyarray
-        let lastOneDigit: any
+        let currentArrayToBeUsed = strategyarray;
         setAsset(prevAsset => {
-          const updatedAsset = [...prevAsset]
-          let newTick = String(messages?.tick.quote)
-          function isPriceLengthDifferent(price: any) {
-            const targetLength = "1111.11".length
-            return price.toString().length !== targetLength
+          const updatedAsset = [...prevAsset];
+          const rawTick = messages?.tick.quote;
+        
+          let formattedTick = Number(rawTick).toFixed(2); 
+          let lastDigit = parseInt(formattedTick.slice(-1)); 
+        
+          if (isNaN(lastDigit)) {
+            lastDigit = 0;
           }
-          if (isPriceLengthDifferent(newTick)) {
-            lastOneDigit = 0
-          } else {
-            lastOneDigit = parseInt(newTick.slice(-1))
+          updatedAsset.push(lastDigit);
+          while (updatedAsset.length > currentArrayToBeUsed) {
+            updatedAsset.shift();
           }
-          updatedAsset.unshift(lastOneDigit)
-          if (updatedAsset.length > currentArrayToBeUsed) {
-            while (updatedAsset.length > currentArrayToBeUsed) {
-              updatedAsset.pop()
-            }
-          }
-          return updatedAsset
-        })
+          return updatedAsset;
+        });   
         break
       case "buy":
         break

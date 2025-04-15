@@ -7,7 +7,7 @@ import { useLiveActionMessage } from "@/hooks/useLiveActionMessage"
 import { useMessages } from "@/hooks/useMessages"
 import { useToast } from "@/hooks/useToasts"
 import { useWebsokets } from "@/hooks/useWebsokets"
-import { ChangeEvent, Suspense } from "react"
+import { ChangeEvent, Suspense, useEffect } from "react"
 import { toast } from "sonner"
 
 const page = () => {
@@ -64,6 +64,22 @@ const GetToken = () => {
         setShowLiveActionLoader
     })
 
+    useEffect(() => {
+        const storedStake = localStorage.getItem("stake")
+        const storedTP = localStorage.getItem("takeProfit")
+        const storedSL = localStorage.getItem("stopLoss")
+    
+        if (storedStake) {
+            setStakeValue(parseFloat(storedStake))
+        }
+        if (storedTP) {
+            setTakeProfit(parseFloat(storedTP))
+        }
+        if (storedSL) {
+            setStopLoss(parseFloat(storedSL))
+        }
+    }, [])
+
     const handleStakeInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         let stakeValue = parseFloat(event.target.value.trim())
         if (!stakeValue) {
@@ -80,7 +96,7 @@ const GetToken = () => {
             return setStakeValue(parseFloat("0.35"))
         }
 
-        if (stakeValue > 10000) {
+        if (stakeValue > 1000) {
             setLiveAction("Maximum stake is 1000 USD")
             setLiveActionClassName("dangerInfo")
             setInvalidINputValue(true)
@@ -88,6 +104,7 @@ const GetToken = () => {
         }
         setInvalidINputValue(false)
         setStakeValue(stakeValue)
+        localStorage.setItem("stake", stakeValue.toString())
         setStakes([])
     }
 
@@ -102,6 +119,7 @@ const GetToken = () => {
             return setStopLoss(parseFloat("0"))
         }
         setTakeProfit(parseFloat(value))
+        localStorage.setItem("takeProfit", value)
         setInvalidINputValue(false)
     }
 
@@ -114,6 +132,7 @@ const GetToken = () => {
             return setStopLoss(parseFloat("0"))
         }
         setStopLoss(parseFloat(value))
+        localStorage.setItem("stopLoss", value)
         setInvalidINputValue(false)
     }
 
@@ -223,6 +242,7 @@ const GetToken = () => {
                         </label>
                         <input
                             readOnly={!stopped}
+                            value={stake}
                             onChange={handleStakeInputChange}
                             className='stakeInput'
                             type='text'
@@ -235,12 +255,13 @@ const GetToken = () => {
                                     Take Profit
                                 </label>
                                 <input
-                                    readOnly={!stopped}
-                                    onChange={handleTakeProfitInputChange}
-                                    className='takeProfitInput'
-                                    type='text'
-                                    name='takeProfit'
-                                    id='takeProfit'
+                                  readOnly={!stopped}
+                                  value={takeProfit}
+                                  onChange={handleTakeProfitInputChange}
+                                  className='takeProfitInput'
+                                  type='text'
+                                  name='takeProfit'
+                                  id='takeProfit'
                                 />
                             </div>
                             <div className='displayColumn'>
@@ -248,12 +269,13 @@ const GetToken = () => {
                                     Stop Loss
                                 </label>
                                 <input
-                                    readOnly={!stopped}
-                                    onChange={handleStopLossInputChange}
-                                    className='stopLossInput'
-                                    type='text'
-                                    name='stopLoss'
-                                    id='stopLoss'
+                                     readOnly={!stopped}
+                                     value={stopLoss}
+                                     onChange={handleStopLossInputChange}
+                                     className='stopLossInput'
+                                     type='text'
+                                     name='stopLoss'
+                                     id='stopLoss'
                                 />
                             </div>
                         </div>
