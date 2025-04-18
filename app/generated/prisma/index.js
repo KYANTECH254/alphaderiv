@@ -148,6 +148,10 @@ const config = {
         "fromEnvVar": null,
         "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -165,16 +169,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://kyan:Sss333123kyan@51.21.158.217:5432/alphabot?schema=public"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// prisma/schema.prisma\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel MpesaCode {\n  id        Int      @id @default(autoincrement())\n  code      String   @unique\n  phone     String\n  amount    String\n  status    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel User {\n  id           Int      @id @default(autoincrement())\n  phone        String   @unique\n  token        String\n  package      String\n  status       String\n  pkgExpiry    DateTime\n  pkgCreatedAt DateTime @default(now())\n  pkgUpdatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "31faba3882153571915850cb814316770798110446e8fe738c1f9322a065912b",
+  "inlineSchema": "// prisma/schema.prisma\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../app/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel MpesaCode {\n  id        Int      @id @default(autoincrement())\n  code      String   @unique\n  phone     String\n  amount    String\n  status    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel User {\n  id           Int      @id @default(autoincrement())\n  phone        String   @unique\n  token        String\n  package      String\n  status       String\n  pkgExpiry    DateTime\n  pkgCreatedAt DateTime @default(now())\n  pkgUpdatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "8e5499308708ed7f7423c1e94dab50258c76a2202125c665b0f1081961112bef",
   "copyEngine": true
 }
 
@@ -215,6 +220,10 @@ Object.assign(exports, Prisma)
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
 path.join(process.cwd(), "app/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "app/generated/prisma/libquery_engine-rhel-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "app/generated/prisma/schema.prisma")
