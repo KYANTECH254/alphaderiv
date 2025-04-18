@@ -10,7 +10,7 @@ import { useWebsokets } from "@/hooks/useWebsokets"
 import { ChangeEvent, Suspense, useEffect } from "react"
 import { toast } from "sonner"
 
-export default function SidebarWithToken () {
+export default function page () {
     const { token } = useGetQueryParams();
 
     return (
