@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { DateTime } from "luxon";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 const IntaSend = require('intasend-node');
 
 let intasend = new IntaSend(
