@@ -10,23 +10,16 @@ import { useWebsokets } from "@/hooks/useWebsokets"
 import { ChangeEvent, Suspense, useEffect } from "react"
 import { toast } from "sonner"
 
-const page = () => {
-    return (
-        <SidebarWithToken />
-    )
-}
-
-const SidebarWithToken = () => {
-    const { token } = useGetQueryParams()
+export default function SidebarWithToken () {
+    const { token } = useGetQueryParams();
 
     return (
-        <Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
             <Sidebar token={token}>
-
                 <GetToken token={token} />
             </Sidebar>
         </Suspense>
-    )
+    );
 }
 
 const GetToken = ({ token }: { token: string }) => {
@@ -312,5 +305,3 @@ const GetToken = ({ token }: { token: string }) => {
         </div >
     )
 }
-
-export default page
