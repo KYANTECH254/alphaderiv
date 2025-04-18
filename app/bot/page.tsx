@@ -18,13 +18,14 @@ const page = () => {
 
 const SidebarWithToken = () => {
     const { token } = useGetQueryParams()
-    
+
     return (
-        <Sidebar token={token}>
-            <Suspense>
+        <Suspense>
+            <Sidebar token={token}>
+
                 <GetToken token={token} />
-            </Suspense>
-        </Sidebar>
+            </Sidebar>
+        </Suspense>
     )
 }
 

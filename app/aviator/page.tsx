@@ -3,6 +3,7 @@
 import CommingSoon from "@/components/CommingSoon";
 import Sidebar from "@/components/SideBar";
 import { useGetQueryParams } from "@/hooks/useGetQueryParams";
+import { Suspense } from "react";
 
 export default function Page() {
     return (
@@ -13,10 +14,13 @@ export default function Page() {
 }
 
 function SidebarWithToken() {
-   const { token } = useGetQueryParams()
+    const { token } = useGetQueryParams()
     return (
-        <Sidebar token={token}>
-            <CommingSoon />
-        </Sidebar>
+        <Suspense>
+            <Sidebar token={token}>
+
+                <CommingSoon />
+            </Sidebar>
+        </Suspense>
     );
 }
