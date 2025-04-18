@@ -2,24 +2,33 @@
 
 import NavSubMenu from "@/components/NavSubMenu"
 import Settings from "@/components/Settings"
+import Sidebar from "@/components/SideBar"
 import { useGetQueryParams } from "@/hooks/useGetQueryParams"
 import { useLiveActionMessage } from "@/hooks/useLiveActionMessage"
 import { useMessages } from "@/hooks/useMessages"
-import { useToast } from "@/hooks/useToasts"
 import { useWebsokets } from "@/hooks/useWebsokets"
 import { ChangeEvent, Suspense, useEffect } from "react"
 import { toast } from "sonner"
 
 const page = () => {
     return (
-        <Suspense>
-            <GetToken></GetToken>
-        </Suspense>
+        <SidebarWithToken />
     )
 }
 
-const GetToken = () => {  
+const SidebarWithToken = () => {
     const { token } = useGetQueryParams()
+    
+    return (
+        <Sidebar token={token}>
+            <Suspense>
+                <GetToken token={token} />
+            </Suspense>
+        </Sidebar>
+    )
+}
+
+const GetToken = ({ token }: { token: string }) => {
     const { connected, setConnected, messages, socket } = useWebsokets({
         token
     })
@@ -68,7 +77,7 @@ const GetToken = () => {
         const storedStake = localStorage.getItem("stake")
         const storedTP = localStorage.getItem("takeProfit")
         const storedSL = localStorage.getItem("stopLoss")
-    
+
         if (storedStake) {
             setStakeValue(parseFloat(storedStake))
         }
@@ -211,9 +220,8 @@ const GetToken = () => {
                             trades.map((trade: any) => (
                                 <div
                                     key={trade.contract_id}
-                                    className={`tradeHistoryInfo ${trade.status === "won" && "wonTradeInfo"} ${trade.status === "lost" && "lostTradeInfo" } ${
-                                        trade.status === "open" && "runningTradeInfo"
-                                    }
+                                    className={`tradeHistoryInfo ${trade.status === "won" && "wonTradeInfo"} ${trade.status === "lost" && "lostTradeInfo"} ${trade.status === "open" && "runningTradeInfo"
+                                        }
                                         }`}
                                 >
                                     <div className='tradeHistoryInfo1'>
@@ -255,13 +263,13 @@ const GetToken = () => {
                                     Take Profit
                                 </label>
                                 <input
-                                  readOnly={!stopped}
-                                  value={takeProfit}
-                                  onChange={handleTakeProfitInputChange}
-                                  className='takeProfitInput'
-                                  type='text'
-                                  name='takeProfit'
-                                  id='takeProfit'
+                                    readOnly={!stopped}
+                                    value={takeProfit}
+                                    onChange={handleTakeProfitInputChange}
+                                    className='takeProfitInput'
+                                    type='text'
+                                    name='takeProfit'
+                                    id='takeProfit'
                                 />
                             </div>
                             <div className='displayColumn'>
@@ -269,13 +277,13 @@ const GetToken = () => {
                                     Stop Loss
                                 </label>
                                 <input
-                                     readOnly={!stopped}
-                                     value={stopLoss}
-                                     onChange={handleStopLossInputChange}
-                                     className='stopLossInput'
-                                     type='text'
-                                     name='stopLoss'
-                                     id='stopLoss'
+                                    readOnly={!stopped}
+                                    value={stopLoss}
+                                    onChange={handleStopLossInputChange}
+                                    className='stopLossInput'
+                                    type='text'
+                                    name='stopLoss'
+                                    id='stopLoss'
                                 />
                             </div>
                         </div>

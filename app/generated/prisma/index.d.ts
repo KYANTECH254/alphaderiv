@@ -1,127 +1,33 @@
 
 /**
  * Client
- */
+**/
 
-import * as runtime from '@prisma/client/runtime/library'
-import * as process from 'node:process'
-import * as path from 'node:path'
-    import { fileURLToPath } from 'node:url'
+import * as runtime from './runtime/library.js';
+import $Types = runtime.Types // general types
+import $Public = runtime.Types.Public
+import $Utils = runtime.Types.Utils
+import $Extensions = runtime.Types.Extensions
+import $Result = runtime.Types.Result
 
-    const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-
-export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
+export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
  * Model MpesaCode
  * 
  */
-export type MpesaCode = runtime.Types.Result.DefaultSelection<Prisma.$MpesaCodePayload>
+export type MpesaCode = $Result.DefaultSelection<Prisma.$MpesaCodePayload>
 /**
  * Model User
  * 
  */
-export type User = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>
-
-
+export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 
 /**
- * Create the Client
- */
-const config: runtime.GetPrismaClientConfig = {
-  "generator": {
-    "name": "client",
-    "provider": {
-      "fromEnvVar": null,
-      "value": "prisma-client"
-    },
-    "output": {
-      "value": "/home/kyan/Desktop/CODE/alphaderiv/src/generated/prisma",
-      "fromEnvVar": null
-    },
-    "config": {
-      "moduleFormat": "esm",
-      "engineType": "library"
-    },
-    "binaryTargets": [
-      {
-        "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
-        "native": true
-      }
-    ],
-    "previewFeatures": [],
-    "sourceFilePath": "/home/kyan/Desktop/CODE/alphaderiv/prisma/schema.prisma",
-    "isCustomOutput": true
-  },
-  "relativePath": "../../../prisma",
-  "clientVersion": "6.6.0",
-  "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
-  "datasourceNames": [
-    "db"
-  ],
-  "activeProvider": "postgresql",
-  "inlineDatasources": {
-    "db": {
-      "url": {
-        "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://kyan:Sss333123kyan@51.21.158.217:5432/alphabot?schema=public"
-      }
-    }
-  },
-  "inlineSchema": "// prisma/schema.prisma\ngenerator client {\n  provider     = \"prisma-client\" // no `-js` at the end\n  output       = \"../src/generated/prisma\" // `output` is required\n  moduleFormat = \"esm\" // or `\"cjs\"` for CommonJS\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel MpesaCode {\n  id        Int      @id @default(autoincrement())\n  code      String   @unique\n  phone     String\n  amount    String\n  status    String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel User {\n  id           Int      @id @default(autoincrement())\n  phone        String   @unique\n  token        String\n  package      String\n  status       String\n  pkgExpiry    DateTime\n  pkgCreatedAt DateTime @default(now())\n  pkgUpdatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "cb957bc9eae0d28886d01931e4c0fadb6fec7c1f9e7d16473b800b2dfab100f8",
-  "copyEngine": true,
-  "runtimeDataModel": {
-    "models": {},
-    "enums": {},
-    "types": {}
-  },
-  "dirname": ""
-}
-config.dirname = __dirname
-
-config.runtimeDataModel = JSON.parse("{\"models\":{\"MpesaCode\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"code\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"phone\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"amount\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"status\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":true}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"phone\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"package\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"status\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"pkgExpiry\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"pkgCreatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"pkgUpdatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":true}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
-config.engineWasm = undefined
-config.compilerWasm = undefined
-
-
-
-// file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node")
-path.join(process.cwd(), "src/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
-// file annotations for bundling tools to include these files
-path.join(__dirname, "schema.prisma")
-path.join(process.cwd(), "src/generated/prisma/schema.prisma")
-
-
-interface PrismaClientConstructor {
-    /**
-   * ## Prisma Client
-   *
-   * Type-safe database client for TypeScript
-   * @example
-   * ```
-   * const prisma = new PrismaClient()
-   * // Fetch zero or more MpesaCodes
-   * const mpesaCodes = await prisma.mpesaCode.findMany()
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
-   */
-  new <
-    ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-    U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
-    ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs
-  >(options?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>): PrismaClient<ClientOptions, U, ExtArgs>
-}
-
-/**
- * ## Prisma Client
+ * ##  Prisma Client ʲˢ
  *
- * Type-safe database client for TypeScript
+ * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
  * const prisma = new PrismaClient()
@@ -129,26 +35,43 @@ interface PrismaClientConstructor {
  * const mpesaCodes = await prisma.mpesaCode.findMany()
  * ```
  *
+ *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
-export interface PrismaClient<
+export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
   U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
-  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs
+  ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
+    /**
+   * ##  Prisma Client ʲˢ
+   *
+   * Type-safe database client for TypeScript & Node.js
+   * @example
+   * ```
+   * const prisma = new PrismaClient()
+   * // Fetch zero or more MpesaCodes
+   * const mpesaCodes = await prisma.mpesaCode.findMany()
+   * ```
+   *
+   *
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   */
+
+  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
    * Connect with the database
    */
-  $connect(): runtime.Types.Utils.JsPromise<void>;
+  $connect(): $Utils.JsPromise<void>;
 
   /**
    * Disconnect from the database
    */
-  $disconnect(): runtime.Types.Utils.JsPromise<void>;
+  $disconnect(): $Utils.JsPromise<void>;
 
   /**
    * Add a middleware
@@ -217,12 +140,12 @@ export interface PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): runtime.Types.Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
-  $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => runtime.Types.Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): runtime.Types.Utils.JsPromise<R>
+  $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
 
 
-  $extends: runtime.Types.Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, runtime.Types.Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
+  $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
   }>>
 
@@ -247,54 +170,40 @@ export interface PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 }
 
-export const PrismaClient = runtime.getPrismaClient(config) as unknown as PrismaClientConstructor
-
 export namespace Prisma {
-  export type DMMF = typeof runtime.DMMF
+  export import DMMF = runtime.DMMF
 
-  export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
+  export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
   /**
    * Validator
    */
-  export const validator = runtime.Public.validator
+  export import validator = runtime.Public.validator
 
   /**
    * Prisma Errors
    */
-
-  export const PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError
-  export type PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError
-
-  export const PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError
-  export type PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError
-
-  export const PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
-  export type PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
-
-  export const PrismaClientInitializationError = runtime.PrismaClientInitializationError
-  export type PrismaClientInitializationError = runtime.PrismaClientInitializationError
-
-  export const PrismaClientValidationError = runtime.PrismaClientValidationError
-  export type PrismaClientValidationError = runtime.PrismaClientValidationError
+  export import PrismaClientKnownRequestError = runtime.PrismaClientKnownRequestError
+  export import PrismaClientUnknownRequestError = runtime.PrismaClientUnknownRequestError
+  export import PrismaClientRustPanicError = runtime.PrismaClientRustPanicError
+  export import PrismaClientInitializationError = runtime.PrismaClientInitializationError
+  export import PrismaClientValidationError = runtime.PrismaClientValidationError
 
   /**
    * Re-export of sql-template-tag
    */
-  export const sql = runtime.sqltag
-  export const empty = runtime.empty
-  export const join = runtime.join
-  export const raw = runtime.raw
-  export const Sql = runtime.Sql
-  export type Sql = runtime.Sql
+  export import sql = runtime.sqltag
+  export import empty = runtime.empty
+  export import join = runtime.join
+  export import raw = runtime.raw
+  export import Sql = runtime.Sql
 
 
 
   /**
    * Decimal.js
    */
-  export const Decimal = runtime.Decimal
-  export type Decimal = runtime.Decimal
+  export import Decimal = runtime.Decimal
 
   export type DecimalJsLike = runtime.DecimalJsLike
 
@@ -309,43 +218,76 @@ export namespace Prisma {
   /**
   * Extensions
   */
-  export type Extension = runtime.Types.Extensions.UserArgs
-  export const getExtensionContext = runtime.Extensions.getExtensionContext
-  export type Args<T, F extends runtime.Operation> = runtime.Types.Public.Args<T, F>
-  export type Payload<T, F extends runtime.Operation = never> = runtime.Types.Public.Payload<T, F>
-  export type Result<T, A, F extends runtime.Operation> = runtime.Types.Public.Result<T, A, F>
-  export type Exact<A, W> = runtime.Types.Public.Exact<A, W>
-
-  export type PrismaVersion = {
-    client: string
-    engine: string
-  }
+  export import Extension = $Extensions.UserArgs
+  export import getExtensionContext = runtime.Extensions.getExtensionContext
+  export import Args = $Public.Args
+  export import Payload = $Public.Payload
+  export import Result = $Public.Result
+  export import Exact = $Public.Exact
 
   /**
    * Prisma Client JS version: 6.6.0
    * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
    */
-  export const prismaVersion: PrismaVersion = {
-    client: "6.6.0",
-    engine: "f676762280b54cd07c770017ed3711ddde35f37a"
+  export type PrismaVersion = {
+    client: string
   }
+
+  export const prismaVersion: PrismaVersion
 
   /**
    * Utility Types
    */
 
 
-  export type JsonObject = runtime.JsonObject
-  export type JsonArray = runtime.JsonArray
-  export type JsonValue = runtime.JsonValue
-  export type InputJsonObject = runtime.InputJsonObject
-  export type InputJsonArray = runtime.InputJsonArray
-  export type InputJsonValue = runtime.InputJsonValue
+  export import JsonObject = runtime.JsonObject
+  export import JsonArray = runtime.JsonArray
+  export import JsonValue = runtime.JsonValue
+  export import InputJsonObject = runtime.InputJsonObject
+  export import InputJsonArray = runtime.InputJsonArray
+  export import InputJsonValue = runtime.InputJsonValue
 
-  export const NullTypes = {
-    DbNull: runtime.objectEnumValues.classes.DbNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.DbNull),
-    JsonNull: runtime.objectEnumValues.classes.JsonNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.JsonNull),
-    AnyNull: runtime.objectEnumValues.classes.AnyNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.AnyNull),
+  /**
+   * Types of the values used to represent different kinds of `null` values when working with JSON fields.
+   *
+   * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+   */
+  namespace NullTypes {
+    /**
+    * Type of `Prisma.DbNull`.
+    *
+    * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
+    *
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class DbNull {
+      private DbNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.JsonNull`.
+    *
+    * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
+    *
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class JsonNull {
+      private JsonNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.AnyNull`.
+    *
+    * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
+    *
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class AnyNull {
+      private AnyNull: never
+      private constructor()
+    }
   }
 
   /**
@@ -353,21 +295,21 @@ export namespace Prisma {
    *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const DbNull = runtime.objectEnumValues.instances.DbNull
+  export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
    *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const JsonNull = runtime.objectEnumValues.instances.JsonNull
+  export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
    *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const AnyNull = runtime.objectEnumValues.instances.AnyNull
+  export const AnyNull: NullTypes.AnyNull
 
   type SelectAndInclude = {
     select: any
@@ -380,13 +322,34 @@ export namespace Prisma {
   }
 
   /**
+   * Get the type of the value, that the Promise holds.
+   */
+  export type PromiseType<T extends PromiseLike<any>> = T extends PromiseLike<infer U> ? U : T;
+
+  /**
+   * Get the return type of a function which returns a Promise.
+   */
+  export type PromiseReturnType<T extends (...args: any) => $Utils.JsPromise<any>> = PromiseType<ReturnType<T>>
+
+  /**
    * From T, pick a set of properties whose keys are in the union K
    */
   type Prisma__Pick<T, K extends keyof T> = {
       [P in K]: T[P];
   };
 
+
   export type Enumerable<T> = T | Array<T>;
+
+  export type RequiredKeys<T> = {
+    [K in keyof T]-?: {} extends Prisma__Pick<T, K> ? never : K
+  }[keyof T]
+
+  export type TruthyKeys<T> = keyof {
+    [K in keyof T as T[K] extends false | undefined | null ? never : K]: K
+  }
+
+  export type TrueKeys<T> = TruthyKeys<Prisma__Pick<T, RequiredKeys<T>>>
 
   /**
    * Subset
@@ -504,6 +467,7 @@ export namespace Prisma {
   }>>;
 
   type Key = string | number | symbol;
+  type AtBasic<O extends object, K extends Key> = K extends keyof O ? O[K] : never;
   type AtStrict<O extends object, K extends Key> = O[K & keyof O];
   type AtLoose<O extends object, K extends Key> = O extends unknown ? AtStrict<O, K> : never;
   export type At<O extends object, K extends Key, strict extends Boolean = 1> = {
@@ -527,7 +491,7 @@ export namespace Prisma {
   type NoExpand<T> = T extends unknown ? T : never;
 
   // this type assumes the passed object is entirely optional
-  export type AtLeast<O extends object, K extends string> = NoExpand<
+  type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
       | {[P in keyof O as P extends K ? P : never]-?: O[P]} & O
@@ -540,10 +504,19 @@ export namespace Prisma {
 
   export type Merge<U extends object> = ComputeRaw<_Merge<Strict<U>>>;
 
+  /**
+  A [[Boolean]]
+  */
   export type Boolean = True | False
 
+  // /**
+  // 1
+  // */
   export type True = 1
 
+  /**
+  0
+  */
   export type False = 0
 
   export type Not<B extends Boolean> = {
@@ -573,6 +546,16 @@ export namespace Prisma {
   }[B1][B2]
 
   export type Keys<U extends Union> = U extends unknown ? keyof U : never
+
+  type Cast<A, B> = A extends B ? A : B;
+
+  export const type: unique symbol;
+
+
+
+  /**
+   * Used by group by
+   */
 
   export type GetScalarType<T, O> = O extends object ? {
     [P in keyof T]: P extends keyof O
@@ -624,10 +607,10 @@ export namespace Prisma {
   type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>
 
 
-  export const ModelName = {
+  export const ModelName: {
     MpesaCode: 'MpesaCode',
     User: 'User'
-  } as const
+  };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
@@ -636,11 +619,11 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  export interface TypeMapCb<ClientOptions = {}> extends runtime.Types.Utils.Fn<{extArgs: runtime.Types.Extensions.InternalArgs }, runtime.Types.Utils.Record<string, any>> {
+  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
   }
 
-  export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
+  export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> = {
     globalOmitOptions: {
       omit: GlobalOmitOptions
     }
@@ -655,27 +638,27 @@ export namespace Prisma {
         operations: {
           findUnique: {
             args: Prisma.MpesaCodeFindUniqueArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload> | null
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload> | null
           }
           findUniqueOrThrow: {
             args: Prisma.MpesaCodeFindUniqueOrThrowArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           findFirst: {
             args: Prisma.MpesaCodeFindFirstArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload> | null
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload> | null
           }
           findFirstOrThrow: {
             args: Prisma.MpesaCodeFindFirstOrThrowArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           findMany: {
             args: Prisma.MpesaCodeFindManyArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
           }
           create: {
             args: Prisma.MpesaCodeCreateArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           createMany: {
             args: Prisma.MpesaCodeCreateManyArgs<ExtArgs>
@@ -683,15 +666,15 @@ export namespace Prisma {
           }
           createManyAndReturn: {
             args: Prisma.MpesaCodeCreateManyAndReturnArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
           }
           delete: {
             args: Prisma.MpesaCodeDeleteArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           update: {
             args: Prisma.MpesaCodeUpdateArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           deleteMany: {
             args: Prisma.MpesaCodeDeleteManyArgs<ExtArgs>
@@ -703,23 +686,23 @@ export namespace Prisma {
           }
           updateManyAndReturn: {
             args: Prisma.MpesaCodeUpdateManyAndReturnArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>[]
           }
           upsert: {
             args: Prisma.MpesaCodeUpsertArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$MpesaCodePayload>
+            result: $Utils.PayloadToResult<Prisma.$MpesaCodePayload>
           }
           aggregate: {
             args: Prisma.MpesaCodeAggregateArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<AggregateMpesaCode>
+            result: $Utils.Optional<AggregateMpesaCode>
           }
           groupBy: {
             args: Prisma.MpesaCodeGroupByArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<MpesaCodeGroupByOutputType>[]
+            result: $Utils.Optional<MpesaCodeGroupByOutputType>[]
           }
           count: {
             args: Prisma.MpesaCodeCountArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<MpesaCodeCountAggregateOutputType> | number
+            result: $Utils.Optional<MpesaCodeCountAggregateOutputType> | number
           }
         }
       }
@@ -729,27 +712,27 @@ export namespace Prisma {
         operations: {
           findUnique: {
             args: Prisma.UserFindUniqueArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload> | null
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findUniqueOrThrow: {
             args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findFirst: {
             args: Prisma.UserFindFirstArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload> | null
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findFirstOrThrow: {
             args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findMany: {
             args: Prisma.UserFindManyArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           create: {
             args: Prisma.UserCreateArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           createMany: {
             args: Prisma.UserCreateManyArgs<ExtArgs>
@@ -757,15 +740,15 @@ export namespace Prisma {
           }
           createManyAndReturn: {
             args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           delete: {
             args: Prisma.UserDeleteArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           update: {
             args: Prisma.UserUpdateArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           deleteMany: {
             args: Prisma.UserDeleteManyArgs<ExtArgs>
@@ -777,23 +760,23 @@ export namespace Prisma {
           }
           updateManyAndReturn: {
             args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           upsert: {
             args: Prisma.UserUpsertArgs<ExtArgs>
-            result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           aggregate: {
             args: Prisma.UserAggregateArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<AggregateUser>
+            result: $Utils.Optional<AggregateUser>
           }
           groupBy: {
             args: Prisma.UserGroupByArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<UserGroupByOutputType>[]
+            result: $Utils.Optional<UserGroupByOutputType>[]
           }
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
-            result: runtime.Types.Utils.Optional<UserCountAggregateOutputType> | number
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
           }
         }
       }
@@ -821,7 +804,7 @@ export namespace Prisma {
       }
     }
   }
-  export const defineExtension = runtime.Extensions.defineExtension as unknown as runtime.Types.Extensions.ExtendsHook<"define", Prisma.TypeMapCb, runtime.Types.Extensions.DefaultArgs>
+  export const defineExtension: $Extensions.ExtendsHook<"define", Prisma.TypeMapCb, $Extensions.DefaultArgs>
   export type DefaultPrismaClient = PrismaClient
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
@@ -952,8 +935,11 @@ export namespace Prisma {
    */
   export type Middleware<T = any> = (
     params: MiddlewareParams,
-    next: (params: MiddlewareParams) => runtime.Types.Utils.JsPromise<T>,
-  ) => runtime.Types.Utils.JsPromise<T>
+    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
+  ) => $Utils.JsPromise<T>
+
+  // tested in getLogLevel.test.ts
+  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
   /**
    * `PrismaClient` proxy available in interactive transactions.
@@ -1065,7 +1051,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type MpesaCodeAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Filter which MpesaCode to aggregate.
      */
@@ -1137,7 +1123,7 @@ export namespace Prisma {
 
 
 
-  export type MpesaCodeGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MpesaCodeWhereInput
     orderBy?: MpesaCodeOrderByWithAggregationInput | MpesaCodeOrderByWithAggregationInput[]
     by: MpesaCodeScalarFieldEnum[] | MpesaCodeScalarFieldEnum
@@ -1180,7 +1166,7 @@ export namespace Prisma {
     >
 
 
-  export type MpesaCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type MpesaCodeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
     phone?: boolean
@@ -1190,7 +1176,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }, ExtArgs["result"]["mpesaCode"]>
 
-  export type MpesaCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type MpesaCodeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
     phone?: boolean
@@ -1200,7 +1186,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }, ExtArgs["result"]["mpesaCode"]>
 
-  export type MpesaCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type MpesaCodeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
     phone?: boolean
@@ -1220,12 +1206,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type MpesaCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "phone" | "amount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["mpesaCode"]>
+  export type MpesaCodeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "phone" | "amount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["mpesaCode"]>
 
-  export type $MpesaCodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type $MpesaCodePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MpesaCode"
     objects: {}
-    scalars: runtime.Types.Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetPayloadResult<{
       id: number
       code: string
       phone: string
@@ -1237,14 +1223,14 @@ export namespace Prisma {
     composites: {}
   }
 
-  export type MpesaCodeGetPayload<S extends boolean | null | undefined | MpesaCodeDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload, S>
+  type MpesaCodeGetPayload<S extends boolean | null | undefined | MpesaCodeDefaultArgs> = $Result.GetResult<Prisma.$MpesaCodePayload, S>
 
-  export type MpesaCodeCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  type MpesaCodeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
     Omit<MpesaCodeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: MpesaCodeCountAggregateInputType | true
     }
 
-  export interface MpesaCodeDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface MpesaCodeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MpesaCode'], meta: { name: 'MpesaCode' } }
     /**
      * Find zero or one MpesaCode that matches the filter.
@@ -1257,7 +1243,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends MpesaCodeFindUniqueArgs>(args: SelectSubset<T, MpesaCodeFindUniqueArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends MpesaCodeFindUniqueArgs>(args: SelectSubset<T, MpesaCodeFindUniqueArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find one MpesaCode that matches the filter or throw an error with `error.code='P2025'`
@@ -1271,7 +1257,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends MpesaCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, MpesaCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends MpesaCodeFindUniqueOrThrowArgs>(args: SelectSubset<T, MpesaCodeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first MpesaCode that matches the filter.
@@ -1286,7 +1272,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends MpesaCodeFindFirstArgs>(args?: SelectSubset<T, MpesaCodeFindFirstArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends MpesaCodeFindFirstArgs>(args?: SelectSubset<T, MpesaCodeFindFirstArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first MpesaCode that matches the filter or
@@ -1302,7 +1288,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends MpesaCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, MpesaCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends MpesaCodeFindFirstOrThrowArgs>(args?: SelectSubset<T, MpesaCodeFindFirstOrThrowArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find zero or more MpesaCodes that matches the filter.
@@ -1320,7 +1306,7 @@ export namespace Prisma {
      * const mpesaCodeWithIdOnly = await prisma.mpesaCode.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends MpesaCodeFindManyArgs>(args?: SelectSubset<T, MpesaCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends MpesaCodeFindManyArgs>(args?: SelectSubset<T, MpesaCodeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
      * Create a MpesaCode.
@@ -1334,7 +1320,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends MpesaCodeCreateArgs>(args: SelectSubset<T, MpesaCodeCreateArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends MpesaCodeCreateArgs>(args: SelectSubset<T, MpesaCodeCreateArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Create many MpesaCodes.
@@ -1372,7 +1358,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends MpesaCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, MpesaCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends MpesaCodeCreateManyAndReturnArgs>(args?: SelectSubset<T, MpesaCodeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Delete a MpesaCode.
@@ -1386,7 +1372,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends MpesaCodeDeleteArgs>(args: SelectSubset<T, MpesaCodeDeleteArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends MpesaCodeDeleteArgs>(args: SelectSubset<T, MpesaCodeDeleteArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Update one MpesaCode.
@@ -1403,7 +1389,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends MpesaCodeUpdateArgs>(args: SelectSubset<T, MpesaCodeUpdateArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends MpesaCodeUpdateArgs>(args: SelectSubset<T, MpesaCodeUpdateArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Delete zero or more MpesaCodes.
@@ -1466,7 +1452,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends MpesaCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, MpesaCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends MpesaCodeUpdateManyAndReturnArgs>(args: SelectSubset<T, MpesaCodeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Create or update one MpesaCode.
@@ -1485,7 +1471,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends MpesaCodeUpsertArgs>(args: SelectSubset<T, MpesaCodeUpsertArgs<ExtArgs>>): Prisma__MpesaCodeClient<runtime.Types.Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends MpesaCodeUpsertArgs>(args: SelectSubset<T, MpesaCodeUpsertArgs<ExtArgs>>): Prisma__MpesaCodeClient<$Result.GetResult<Prisma.$MpesaCodePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
@@ -1504,7 +1490,7 @@ export namespace Prisma {
     count<T extends MpesaCodeCountArgs>(
       args?: Subset<T, MpesaCodeCountArgs>,
     ): Prisma.PrismaPromise<
-      T extends runtime.Types.Utils.Record<'select', any>
+      T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
           : GetScalarType<T['select'], MpesaCodeCountAggregateOutputType>
@@ -1625,7 +1611,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__MpesaCodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__MpesaCodeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1633,20 +1619,20 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
      * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
      * @returns A Promise for the completion of the callback.
      */
-    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
   }
 
 
@@ -1655,7 +1641,7 @@ export namespace Prisma {
   /**
    * Fields of the MpesaCode model
    */
-  export interface MpesaCodeFieldRefs {
+  interface MpesaCodeFieldRefs {
     readonly id: FieldRef<"MpesaCode", 'Int'>
     readonly code: FieldRef<"MpesaCode", 'String'>
     readonly phone: FieldRef<"MpesaCode", 'String'>
@@ -1670,7 +1656,7 @@ export namespace Prisma {
   /**
    * MpesaCode findUnique
    */
-  export type MpesaCodeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1688,7 +1674,7 @@ export namespace Prisma {
   /**
    * MpesaCode findUniqueOrThrow
    */
-  export type MpesaCodeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1706,7 +1692,7 @@ export namespace Prisma {
   /**
    * MpesaCode findFirst
    */
-  export type MpesaCodeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1754,7 +1740,7 @@ export namespace Prisma {
   /**
    * MpesaCode findFirstOrThrow
    */
-  export type MpesaCodeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1802,7 +1788,7 @@ export namespace Prisma {
   /**
    * MpesaCode findMany
    */
-  export type MpesaCodeFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1845,7 +1831,7 @@ export namespace Prisma {
   /**
    * MpesaCode create
    */
-  export type MpesaCodeCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1863,7 +1849,7 @@ export namespace Prisma {
   /**
    * MpesaCode createMany
    */
-  export type MpesaCodeCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many MpesaCodes.
      */
@@ -1874,7 +1860,7 @@ export namespace Prisma {
   /**
    * MpesaCode createManyAndReturn
    */
-  export type MpesaCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1893,7 +1879,7 @@ export namespace Prisma {
   /**
    * MpesaCode update
    */
-  export type MpesaCodeUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1915,7 +1901,7 @@ export namespace Prisma {
   /**
    * MpesaCode updateMany
    */
-  export type MpesaCodeUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The data used to update MpesaCodes.
      */
@@ -1933,7 +1919,7 @@ export namespace Prisma {
   /**
    * MpesaCode updateManyAndReturn
    */
-  export type MpesaCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1959,7 +1945,7 @@ export namespace Prisma {
   /**
    * MpesaCode upsert
    */
-  export type MpesaCodeUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -1985,7 +1971,7 @@ export namespace Prisma {
   /**
    * MpesaCode delete
    */
-  export type MpesaCodeDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -2003,7 +1989,7 @@ export namespace Prisma {
   /**
    * MpesaCode deleteMany
    */
-  export type MpesaCodeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Filter which MpesaCodes to delete
      */
@@ -2017,7 +2003,7 @@ export namespace Prisma {
   /**
    * MpesaCode without action
    */
-  export type MpesaCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type MpesaCodeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MpesaCode
      */
@@ -2126,7 +2112,7 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Filter which User to aggregate.
      */
@@ -2198,7 +2184,7 @@ export namespace Prisma {
 
 
 
-  export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
     orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
     by: UserScalarFieldEnum[] | UserScalarFieldEnum
@@ -2242,7 +2228,7 @@ export namespace Prisma {
     >
 
 
-  export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     phone?: boolean
     token?: boolean
@@ -2253,7 +2239,7 @@ export namespace Prisma {
     pkgUpdatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
-  export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     phone?: boolean
     token?: boolean
@@ -2264,7 +2250,7 @@ export namespace Prisma {
     pkgUpdatedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
-  export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     phone?: boolean
     token?: boolean
@@ -2286,12 +2272,12 @@ export namespace Prisma {
     pkgUpdatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phone" | "token" | "package" | "status" | "pkgExpiry" | "pkgCreatedAt" | "pkgUpdatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "phone" | "token" | "package" | "status" | "pkgExpiry" | "pkgCreatedAt" | "pkgUpdatedAt", ExtArgs["result"]["user"]>
 
-  export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {}
-    scalars: runtime.Types.Extensions.GetPayloadResult<{
+    scalars: $Extensions.GetPayloadResult<{
       id: number
       phone: string
       token: string
@@ -2304,14 +2290,14 @@ export namespace Prisma {
     composites: {}
   }
 
-  export type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserPayload, S>
+  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  export type UserCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
     Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: UserCountAggregateInputType | true
     }
 
-  export interface UserDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
     [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
     /**
      * Find zero or one User that matches the filter.
@@ -2324,7 +2310,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find one User that matches the filter or throw an error with `error.code='P2025'`
@@ -2338,7 +2324,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first User that matches the filter.
@@ -2353,7 +2339,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first User that matches the filter or
@@ -2369,7 +2355,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find zero or more Users that matches the filter.
@@ -2387,7 +2373,7 @@ export namespace Prisma {
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
      * Create a User.
@@ -2401,7 +2387,7 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Create many Users.
@@ -2439,7 +2425,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Delete a User.
@@ -2453,7 +2439,7 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Update one User.
@@ -2470,7 +2456,7 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Delete zero or more Users.
@@ -2533,7 +2519,7 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Create or update one User.
@@ -2552,7 +2538,7 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
@@ -2571,7 +2557,7 @@ export namespace Prisma {
     count<T extends UserCountArgs>(
       args?: Subset<T, UserCountArgs>,
     ): Prisma.PrismaPromise<
-      T extends runtime.Types.Utils.Record<'select', any>
+      T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
           : GetScalarType<T['select'], UserCountAggregateOutputType>
@@ -2692,7 +2678,7 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2700,20 +2686,20 @@ export namespace Prisma {
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
     /**
      * Attaches a callback for only the rejection of the Promise.
      * @param onrejected The callback to execute when the Promise is rejected.
      * @returns A Promise for the completion of the callback.
      */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
     /**
      * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
      * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
      * @returns A Promise for the completion of the callback.
      */
-    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
   }
 
 
@@ -2722,7 +2708,7 @@ export namespace Prisma {
   /**
    * Fields of the User model
    */
-  export interface UserFieldRefs {
+  interface UserFieldRefs {
     readonly id: FieldRef<"User", 'Int'>
     readonly phone: FieldRef<"User", 'String'>
     readonly token: FieldRef<"User", 'String'>
@@ -2738,7 +2724,7 @@ export namespace Prisma {
   /**
    * User findUnique
    */
-  export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2756,7 +2742,7 @@ export namespace Prisma {
   /**
    * User findUniqueOrThrow
    */
-  export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2774,7 +2760,7 @@ export namespace Prisma {
   /**
    * User findFirst
    */
-  export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2822,7 +2808,7 @@ export namespace Prisma {
   /**
    * User findFirstOrThrow
    */
-  export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2870,7 +2856,7 @@ export namespace Prisma {
   /**
    * User findMany
    */
-  export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2913,7 +2899,7 @@ export namespace Prisma {
   /**
    * User create
    */
-  export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2931,7 +2917,7 @@ export namespace Prisma {
   /**
    * User createMany
    */
-  export type UserCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The data used to create many Users.
      */
@@ -2942,7 +2928,7 @@ export namespace Prisma {
   /**
    * User createManyAndReturn
    */
-  export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2961,7 +2947,7 @@ export namespace Prisma {
   /**
    * User update
    */
-  export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -2983,7 +2969,7 @@ export namespace Prisma {
   /**
    * User updateMany
    */
-  export type UserUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The data used to update Users.
      */
@@ -3001,7 +2987,7 @@ export namespace Prisma {
   /**
    * User updateManyAndReturn
    */
-  export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3027,7 +3013,7 @@ export namespace Prisma {
   /**
    * User upsert
    */
-  export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3053,7 +3039,7 @@ export namespace Prisma {
   /**
    * User delete
    */
-  export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3071,7 +3057,7 @@ export namespace Prisma {
   /**
    * User deleteMany
    */
-  export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Filter which Users to delete
      */
@@ -3085,7 +3071,7 @@ export namespace Prisma {
   /**
    * User without action
    */
-  export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the User
      */
@@ -3101,17 +3087,17 @@ export namespace Prisma {
    * Enums
    */
 
-  export const TransactionIsolationLevel = runtime.makeStrictEnum({
+  export const TransactionIsolationLevel: {
     ReadUncommitted: 'ReadUncommitted',
     ReadCommitted: 'ReadCommitted',
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
-  } as const)
+  };
 
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const MpesaCodeScalarFieldEnum = {
+  export const MpesaCodeScalarFieldEnum: {
     id: 'id',
     code: 'code',
     phone: 'phone',
@@ -3119,12 +3105,12 @@ export namespace Prisma {
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
-  } as const
+  };
 
   export type MpesaCodeScalarFieldEnum = (typeof MpesaCodeScalarFieldEnum)[keyof typeof MpesaCodeScalarFieldEnum]
 
 
-  export const UserScalarFieldEnum = {
+  export const UserScalarFieldEnum: {
     id: 'id',
     phone: 'phone',
     token: 'token',
@@ -3133,23 +3119,23 @@ export namespace Prisma {
     pkgExpiry: 'pkgExpiry',
     pkgCreatedAt: 'pkgCreatedAt',
     pkgUpdatedAt: 'pkgUpdatedAt'
-  } as const
+  };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const SortOrder = {
+  export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
-  } as const
+  };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const QueryMode = {
+  export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
-  } as const
+  };
 
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
@@ -3775,4 +3761,9 @@ export namespace Prisma {
   export type BatchPayload = {
     count: number
   }
+
+  /**
+   * DMMF
+   */
+  export const dmmf: runtime.BaseDMMF
 }

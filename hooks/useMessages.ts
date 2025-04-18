@@ -292,25 +292,31 @@ export const useMessages = ({
         break
       case "history":
         break
-      case "tick":
-        let currentArrayToBeUsed = strategyarray;
-        setAsset(prevAsset => {
-          const updatedAsset = [...prevAsset];
-          const rawTick = messages?.tick.quote;
-        
-          let formattedTick = Number(rawTick).toFixed(2); 
-          let lastDigit = parseInt(formattedTick.slice(-1)); 
-        
-          if (isNaN(lastDigit)) {
-            lastDigit = 0;
+        case "tick":
+          if (!messages?.tick || typeof messages.tick.quote === 'undefined') {
+            return;
           }
-          updatedAsset.push(lastDigit);
-          while (updatedAsset.length > currentArrayToBeUsed) {
-            updatedAsset.shift();
-          }
-          return updatedAsset;
-        });   
-        break
+          let currentArrayToBeUsed = strategyarray;
+          setAsset(prevAsset => {
+            const updatedAsset = [...prevAsset];
+            const rawTick = messages.tick.quote;
+        
+            console.log(rawTick);
+        
+            let formattedTick = Number(rawTick).toFixed(2); 
+            let lastDigit = parseInt(formattedTick.slice(-1)); 
+        
+            if (isNaN(lastDigit)) {
+              lastDigit = 0;
+            }
+            updatedAsset.push(lastDigit);
+        
+            while (updatedAsset.length > currentArrayToBeUsed) {
+              updatedAsset.shift();
+            }
+            return updatedAsset;
+          });
+          break;        
       case "buy":
         break
       case "sell":
