@@ -4,7 +4,7 @@ import CommingSoon from "@/components/CommingSoon";
 import Sidebar from "@/components/SideBar";
 import { useGetQueryParams } from "@/hooks/useGetQueryParams";
 
-export default function page() {
+export default function Page() {
     const { token } = useGetQueryParams();
 
     return (
