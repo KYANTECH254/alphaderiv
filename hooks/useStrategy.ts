@@ -70,8 +70,8 @@ export function secondStrategy(
   sendMsg: (msg: any) => void,
   setDefaultStake: Dispatch<SetStateAction<number>>
 ) {
-  // const consecutiveDigitsCount = countConsecutiveDigits(asset);
-  // if (consecutiveDigitsCount >= 0) {
+  const count = asset.filter(digit => digit >= 1).length
+  if (count === asset.length) {
     setLiveAction("Trading signal acquired, placing trade")
     setShowLiveActionLoader(true)
     setLiveActionClassName("successInfo")
@@ -101,7 +101,7 @@ export function secondStrategy(
       }
       return updatedStake
     })
-  // }
+  }
 }
 export function fourthStrategy(
   stopped: boolean,

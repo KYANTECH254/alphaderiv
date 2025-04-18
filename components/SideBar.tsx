@@ -14,7 +14,7 @@ import clsx from "clsx";
 const navItems = [
   { name: "Over Under Bot", href: "/bot", icon: <Home size={18} /> },
   { name: "Aviator", href: "/aviator", icon: <Plane size={18} /> },
-  { name: "Help", href: "/help", icon: <HelpCircle size={18} /> },
+  // { name: "Help", href: "/help", icon: <HelpCircle size={18} /> },
 ];
 
 interface SidebarProps {

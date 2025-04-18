@@ -192,7 +192,6 @@ const GetToken = ({ token }: { token: string }) => {
                 <li className='balInfo'>
                     {account?.balance} {account?.currency}
                 </li>
-
                 <NavSubMenu data={account}></NavSubMenu>
             </div>
 
