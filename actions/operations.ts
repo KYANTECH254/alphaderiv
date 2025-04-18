@@ -16,7 +16,7 @@ const ENVIRONMENT = process.env.ENVIRONMENT;
 
 export async function checkUserSession() {
     try {
-        const clientToken = cookies().get("userToken")?.value;
+        const clientToken = (await cookies()).get("userToken")?.value;
         if (!clientToken) {
             return { isValid: false, message: "No authentication token found." };
         }
@@ -96,7 +96,7 @@ export async function loginUser(phone: any) {
             data: { token },
         });
 
-        cookies().set("userToken", token, { 
+        (await cookies()).set("userToken", token, { 
             httpOnly: ENVIRONMENT === "production", 
             secure: ENVIRONMENT === "production" 
         });
