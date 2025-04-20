@@ -52,7 +52,7 @@ export const useMessages = ({
   const [profitlossmartingale, setProfitLossMartingale] = useState<boolean>(true)
   const [strategy, setStrategy] = useState<any>("first")
   const [strategyarray, setStrategyArray] = useState<number>(2)
-  const [symbol, setSymbol] = useState<any>("1HZ100V")
+  const [symbol, setSymbol] = useState<any>("R_50")
   const [resetDemoBal, setResetDemoBal] = useState<boolean>()
   const [consecutiveWins, setconsecutiveWins] = useState<number>(0)
   const [maxConsecutiveWins] = useState<number>(3)
@@ -131,16 +131,16 @@ export const useMessages = ({
     function analysis() {
       if (strategy === "first") {
         setStrategyArray(2)
-        setSymbol("1HZ100V")
+        setSymbol("R_50")
       } else if (strategy === "second") {
         setStrategyArray(2)
-        setSymbol("1HZ100V")
+        setSymbol("R_50")
       } else if (strategy === "fourth") {
         setStrategyArray(2)
-        setSymbol("1HZ100V")
+        setSymbol("R_50")
       } else if (strategy === "fifth") {
         setStrategyArray(1)
-        setSymbol("1HZ100V")
+        setSymbol("R_50")
       }
       if (stopped) {
         setLiveAction("Start bot")

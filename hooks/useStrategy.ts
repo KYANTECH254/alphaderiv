@@ -41,7 +41,7 @@ export function firstStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "1HZ100V",
+        symbol: "R_50",
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -87,7 +87,7 @@ export function secondStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "1HZ100V",
+        symbol: "R_50",
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -133,7 +133,7 @@ export function fourthStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "1HZ100V",
+        symbol: "R_50",
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -180,7 +180,7 @@ export function fifthStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "1HZ100V",
+        symbol: "R_50",
       },
     })
     setRunningTrades(prevData => prevData + 1)
