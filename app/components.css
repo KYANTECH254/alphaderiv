@@ -127,6 +127,9 @@
 .slider-checkbox input:checked + label[for="ProfitLossMartingale"]:before {
   background-color: #22bb33;
 }
+.slider-checkbox input:checked + label[for="1326"]:before {
+  background-color: #22bb33;
+}
 /**
  * ==============================================
  * Toast

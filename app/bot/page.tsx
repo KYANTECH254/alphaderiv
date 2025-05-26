@@ -64,6 +64,9 @@ const GetToken = ({ token }: { token: string }) => {
         setStrategy,
         setSymbol,
         setResetDemoBal,
+        set1326,
+        strategy1326,
+        symbol
     } = useMessages({
         messages,
         socket,
@@ -300,12 +303,15 @@ const GetToken = ({ token }: { token: string }) => {
                 <Settings
                     data={account}
                     setProfitLossMartingaleState={setProfitLossMartingale}
+                    strategy1326={strategy1326}
+                    set1326={set1326}
                     profitlossmartingale={profitlossmartingale}
                     setMartingaleState={setMartingale}
                     martingale={martingale}
                     setStrategy={setStrategy}
                     setSymbol={setSymbol}
                     setResetDemoBal={setResetDemoBal}
+                    symbol={symbol}
                 ></Settings>
             </div>
         </div >

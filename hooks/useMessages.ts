@@ -5,6 +5,8 @@ import {
   firstStrategy,
   fourthStrategy,
   secondStrategy,
+  sixthStrategy,
+  thirdStrategy
 } from "./useStrategy"
 import { toast } from "sonner"
 
@@ -47,24 +49,29 @@ export const useMessages = ({
   const [totalstopsProfit, setTotalStopsProfit] = useState<number>(0)
   const [invalidInputValue, setInvalidINputValue] = useState(false)
   const [profitClass, setProfitClass] = useState<any>()
-  const [martingale, setMartingale] = useState<boolean>(false)
+  const [martingale, setMartingale] = useState<boolean>(true)
   const [martingaleOdd, setMartingaleOdd] = useState<number>(2)
-  const [profitlossmartingale, setProfitLossMartingale] = useState<boolean>(true)
-  const [strategy, setStrategy] = useState<any>("first")
+  const [profitlossmartingale, setProfitLossMartingale] = useState<boolean>(false)
+  const [strategy, setStrategy] = useState<string>("first")
   const [strategyarray, setStrategyArray] = useState<number>(2)
   const [symbol, setSymbol] = useState<any>("R_50")
   const [resetDemoBal, setResetDemoBal] = useState<boolean>()
   const [consecutiveWins, setconsecutiveWins] = useState<number>(0)
   const [maxConsecutiveWins] = useState<number>(3)
+  const [strategy1326, set1326] = useState(false)
   const assetRef = useRef<any>()
-
-  // Wrap the passed-in socket in a ref so we can replace it on reconnect.
+  const stepRef = useRef(0);
   const socketRef = useRef<WebSocket>(socket)
+  const arrayRef = useRef(strategyarray)
+
+  useEffect(() => {
+    arrayRef.current = strategyarray
+  }, [strategyarray])
+
   useEffect(() => {
     socketRef.current = socket
   }, [socket])
 
-  // Modified sendMsg using our socketRef.
   function sendMsg(msg: any) {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(msg))
@@ -130,17 +137,10 @@ export const useMessages = ({
     }
     function analysis() {
       if (strategy === "first") {
-        setStrategyArray(2)
-        setSymbol("R_50")
       } else if (strategy === "second") {
-        setStrategyArray(2)
-        setSymbol("R_50")
       } else if (strategy === "fourth") {
-        setStrategyArray(2)
-        setSymbol("R_50")
       } else if (strategy === "fifth") {
         setStrategyArray(1)
-        setSymbol("R_50")
       }
       if (stopped) {
         setLiveAction("Start bot")
@@ -164,7 +164,9 @@ export const useMessages = ({
           setStakes,
           stake,
           sendMsg,
-          setDefaultStake
+          setDefaultStake,
+          symbol,
+          arrayRef
         )
       } else if (strategy === "second") {
         secondStrategy(
@@ -178,7 +180,23 @@ export const useMessages = ({
           setStakes,
           stake,
           sendMsg,
-          setDefaultStake
+          setDefaultStake,
+          symbol
+        )
+      } else if (strategy === "third") {
+        thirdStrategy(
+          stopped,
+          runningTrades,
+          asset,
+          setLiveAction,
+          setShowLiveActionLoader,
+          setLiveActionClassName,
+          setRunningTrades,
+          setStakes,
+          stake,
+          sendMsg,
+          setDefaultStake,
+          symbol
         )
       } else if (strategy === "fourth") {
         fourthStrategy(
@@ -192,7 +210,8 @@ export const useMessages = ({
           setStakes,
           stake,
           sendMsg,
-          setDefaultStake
+          setDefaultStake,
+          symbol
         )
       } else if (strategy === "fifth") {
         fifthStrategy(
@@ -206,7 +225,23 @@ export const useMessages = ({
           setStakes,
           stake,
           sendMsg,
-          setDefaultStake
+          setDefaultStake,
+          symbol
+        )
+      } else if (strategy === "sixth") {
+        sixthStrategy(
+          stopped,
+          runningTrades,
+          asset,
+          setLiveAction,
+          setShowLiveActionLoader,
+          setLiveActionClassName,
+          setRunningTrades,
+          setStakes,
+          stake,
+          sendMsg,
+          setDefaultStake,
+          symbol
         )
       }
     }
@@ -218,9 +253,12 @@ export const useMessages = ({
       switch (status) {
         case "won":
           setStakeValue(defaultStake)
+          setStrategyArray(2);
           break
         case "lost":
+          console.log(arrayRef.current);
           const newStake = stake * martingaleOdd
+          setStrategyArray(prev => prev + 1);
           setStakeValue(newStake)
           break
         default:
@@ -249,6 +287,33 @@ export const useMessages = ({
           break
         default:
           break
+      }
+    }
+    function start1326(status: string) {
+      if (!strategy1326) return;
+      if (status === "lost") {
+        stepRef.current = 0;
+        setStakeValue(defaultStake);
+        return;
+      }
+      if (status === "won") {
+        stepRef.current += 1;
+        console.log("Step", stepRef.current);
+        switch (stepRef.current) {
+          case 1:
+            setStakeValue(defaultStake * 3);
+            break;
+          case 2:
+            setStakeValue(defaultStake * 2);
+            break;
+          case 3:
+            setStakeValue(defaultStake * 6);
+            break;
+          default:
+            stepRef.current = 0;  // Reset to 0 after case 3
+            setStakeValue(defaultStake);
+            break;
+        }
       }
     }
     function resetDemoBalance() {
@@ -292,31 +357,28 @@ export const useMessages = ({
         break
       case "history":
         break
-        case "tick":
-          if (!messages?.tick || typeof messages.tick.quote === 'undefined') {
-            return;
+      case "tick":
+        if (!messages?.tick || typeof messages.tick.quote === 'undefined') {
+          return;
+        }
+        let currentArrayToBeUsed = strategyarray;
+        setAsset(prevAsset => {
+          const updatedAsset = [...prevAsset];
+          const rawTick = messages.tick.quote;
+          let formattedTick = Number(rawTick).toFixed(2);
+          let lastDigit = parseInt(formattedTick.slice(-1));
+
+          if (isNaN(lastDigit)) {
+            lastDigit = 0;
           }
-          let currentArrayToBeUsed = strategyarray;
-          setAsset(prevAsset => {
-            const updatedAsset = [...prevAsset];
-            const rawTick = messages.tick.quote;
-        
-            console.log(rawTick);
-        
-            let formattedTick = Number(rawTick).toFixed(2); 
-            let lastDigit = parseInt(formattedTick.slice(-1)); 
-        
-            if (isNaN(lastDigit)) {
-              lastDigit = 0;
-            }
-            updatedAsset.push(lastDigit);
-        
-            while (updatedAsset.length > currentArrayToBeUsed) {
-              updatedAsset.shift();
-            }
-            return updatedAsset;
-          });
-          break;        
+          updatedAsset.push(lastDigit);
+
+          while (updatedAsset.length > currentArrayToBeUsed) {
+            updatedAsset.shift();
+          }
+          return updatedAsset;
+        });
+        break;
       case "buy":
         break
       case "sell":
@@ -363,12 +425,14 @@ export const useMessages = ({
           setRunningTrades(prev => Math.max(prev - 1, 0));
           setShowLiveActionLoader(false);
           if (status === "won") {
+            start1326(status);
             startMartingale(status);
             startProfitLossMartingale(status);
             setLiveAction(`You have ${status} +${profit} USD`);
             setLiveActionClassName("successInfo");
           }
           if (status === "lost") {
+            start1326(status);
             startMartingale(status);
             startProfitLossMartingale(status);
             setLiveAction(`You have ${status} ${profit} USD`);
@@ -385,7 +449,7 @@ export const useMessages = ({
     calculateProfit(stopLoss, takeProfit)
     calculateTotalProfit()
     resetDemoBalance()
-  }, [messages, strategy, strategyarray, totalstopsProfit, symbol])
+  }, [messages, strategy, totalstopsProfit, symbol])
 
   return {
     account,
@@ -415,7 +479,10 @@ export const useMessages = ({
     setStakes,
     stakes,
     setStrategy,
+    symbol,
     setSymbol,
     setResetDemoBal,
+    set1326,
+    strategy1326
   }
 }

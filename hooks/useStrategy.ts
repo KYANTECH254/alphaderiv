@@ -1,5 +1,5 @@
 "use client"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, MutableRefObject, SetStateAction } from "react"
 const countConsecutiveDigits = (asset: number[]) => {
   let consecutiveCount = 0;
   for (let i = asset.length - 1; i >= 0; i--) {
@@ -11,6 +11,7 @@ const countConsecutiveDigits = (asset: number[]) => {
   }
   return consecutiveCount;
 };
+
 export function firstStrategy(
   stopped: boolean,
   runningTrades: number,
@@ -22,10 +23,12 @@ export function firstStrategy(
   setStakes: Dispatch<SetStateAction<number[]>>,
   stake: number,
   sendMsg: (msg: any) => void,
-  setDefaultStake: Dispatch<SetStateAction<number>>
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string,
+  arrayRef:MutableRefObject<number>
 ) {
   const consecutiveDigitsCount = countConsecutiveDigits(asset);
-  if (consecutiveDigitsCount >= 1) {
+  if (consecutiveDigitsCount >= arrayRef.current) {
     setLiveAction("Trading signal acquired, placing trade")
     setShowLiveActionLoader(true)
     setLiveActionClassName("successInfo")
@@ -41,7 +44,7 @@ export function firstStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "R_50",
+        symbol: symbol,
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -57,6 +60,7 @@ export function firstStrategy(
     })
   }
 }
+
 export function secondStrategy(
   stopped: boolean,
   runningTrades: number,
@@ -68,10 +72,11 @@ export function secondStrategy(
   setStakes: Dispatch<SetStateAction<number[]>>,
   stake: number,
   sendMsg: (msg: any) => void,
-  setDefaultStake: Dispatch<SetStateAction<number>>
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string
 ) {
-  const count = asset.filter(digit => digit >= 1).length
-  if (count === asset.length) {
+  const consecutiveDigitsCount = countConsecutiveDigits(asset);
+  if (consecutiveDigitsCount >= 2) {
     setLiveAction("Trading signal acquired, placing trade")
     setShowLiveActionLoader(true)
     setLiveActionClassName("successInfo")
@@ -87,7 +92,7 @@ export function secondStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "R_50",
+        symbol: symbol,
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -103,6 +108,7 @@ export function secondStrategy(
     })
   }
 }
+
 export function fourthStrategy(
   stopped: boolean,
   runningTrades: number,
@@ -114,7 +120,8 @@ export function fourthStrategy(
   setStakes: Dispatch<SetStateAction<number[]>>,
   stake: number,
   sendMsg: (msg: any) => void,
-  setDefaultStake: Dispatch<SetStateAction<number>>
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string
 ) {
   const count = asset.filter(digit => digit >= 6).length
   if (count === asset.length) {
@@ -161,7 +168,8 @@ export function fifthStrategy(
   setStakes: Dispatch<SetStateAction<number[]>>,
   stake: number,
   sendMsg: (msg: any) => void,
-  setDefaultStake: Dispatch<SetStateAction<number>>
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string
 ) {
   const count = asset.filter(digit => digit === 6).length
   if (count === asset.length) {
@@ -180,7 +188,7 @@ export function fifthStrategy(
         currency: "USD",
         duration: 1,
         duration_unit: "t",
-        symbol: "R_50",
+        symbol: symbol,
       },
     })
     setRunningTrades(prevData => prevData + 1)
@@ -195,4 +203,108 @@ export function fifthStrategy(
       return updatedStake
     })
   }
+}
+
+export function sixthStrategy(
+  stopped: boolean,
+  runningTrades: number,
+  asset: number[],
+  setLiveAction: Dispatch<SetStateAction<any>>,
+  setShowLiveActionLoader: Dispatch<SetStateAction<any>>,
+  setLiveActionClassName: Dispatch<SetStateAction<any>>,
+  setRunningTrades: Dispatch<SetStateAction<number>>,
+  setStakes: Dispatch<SetStateAction<number[]>>,
+  stake: number,
+  sendMsg: (msg: any) => void,
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string
+) {
+  const consecutiveDigitsCount = countConsecutiveDigits(asset);
+  if (consecutiveDigitsCount >= 2) {
+    setLiveAction("Trading signal acquired, placing trade")
+    setShowLiveActionLoader(true)
+    setLiveActionClassName("successInfo")
+    sendMsg({
+      buy: 1,
+      subscribe: 1,
+      price: stake,
+      parameters: {
+        amount: stake,
+        basis: "stake",
+        contract_type: "DIGITOVER",
+        barrier: 5,
+        currency: "USD",
+        duration: 1,
+        duration_unit: "t",
+        symbol: symbol,
+      },
+    })
+    setRunningTrades(prevData => prevData + 1)
+    setStakes(prev => {
+      const updatedStake = [...prev]
+      updatedStake.unshift(stake)
+      const firststake = updatedStake[updatedStake.length - 1]
+      setDefaultStake(firststake)
+      if (stopped) {
+        setStakes([])
+      }
+      return updatedStake
+    })
+  }
+}
+
+export function thirdStrategy(
+  stopped: boolean,
+  runningTrades: number,
+  asset: number[],
+  setLiveAction: Dispatch<SetStateAction<any>>,
+  setShowLiveActionLoader: Dispatch<SetStateAction<any>>,
+  setLiveActionClassName: Dispatch<SetStateAction<any>>,
+  setRunningTrades: Dispatch<SetStateAction<number>>,
+  setStakes: Dispatch<SetStateAction<number[]>>,
+  stake: number,
+  sendMsg: (msg: any) => void,
+  setDefaultStake: Dispatch<SetStateAction<number>>,
+  symbol: string
+) {
+  const recentDigit = asset[0]; // most recent
+  if (recentDigit === 4) return; // Ignore 4
+
+  const contractType = recentDigit <= 3 ? "DIGITOVER" : "DIGITUNDER";
+  const barrier = recentDigit;
+
+  // const consecutiveDigitsCount = countConsecutiveDigits(asset);
+  // if (consecutiveDigitsCount >= 2) {
+    setLiveAction("Trading signal acquired, placing trade");
+    setShowLiveActionLoader(true);
+    setLiveActionClassName("successInfo");
+
+    sendMsg({
+      buy: 1,
+      subscribe: 1,
+      price: stake,
+      parameters: {
+        amount: stake,
+        basis: "stake",
+        contract_type: contractType,
+        barrier: barrier,
+        currency: "USD",
+        duration: 1,
+        duration_unit: "t",
+        symbol: symbol,
+      },
+    });
+
+    setRunningTrades(prev => prev + 1);
+
+    setStakes(prev => {
+      const updatedStake = [stake, ...prev];
+      const firststake = updatedStake[updatedStake.length - 1];
+      setDefaultStake(firststake);
+      if (stopped) {
+        return [];
+      }
+      return updatedStake;
+    });
+  // }
 }

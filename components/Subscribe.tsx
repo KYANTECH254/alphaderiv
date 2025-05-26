@@ -30,7 +30,7 @@ export default function Subscribe() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isloading, setIsLoading] = useState(false);
-    const { isLoggedIn, subscriptionPackage } = useSubscription();
+    // const { isLoggedIn, subscriptionPackage } = useSubscription();
     const router = useRouter();
 
     const handleSubscribe = (pkg: Package) => {
@@ -81,20 +81,20 @@ export default function Subscribe() {
         }
     };
 
-    if (subscriptionPackage) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen">
-                <h1 className="text-2xl font-semibold text-green-500 text-center">Your Current Subscription Package is <span className="text-red-500">{subscriptionPackage.package}</span></h1>
+    // if (subscriptionPackage) {
+    //     return (
+    //         <div className="flex flex-col items-center justify-center min-h-screen">
+    //             <h1 className="text-2xl font-semibold text-green-500 text-center">Your Current Subscription Package is <span className="text-red-500">{subscriptionPackage.package}</span></h1>
 
-                <button
-                    className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md text-lg hover:bg-green-600 transition font-semibold text-center flex flex-row items-center gap-2"
-                    onClick={() => router.push("/")}
-                >
-                    Start Trading <ArrowRight />
-                </button>
-            </div>
-        );
-    }
+    //             <button
+    //                 className="mt-4 bg-green-500 text-white px-6 py-3 rounded-md text-lg hover:bg-green-600 transition font-semibold text-center flex flex-row items-center gap-2"
+    //                 onClick={() => router.push("/")}
+    //             >
+    //                 Start Trading <ArrowRight />
+    //             </button>
+    //         </div>
+    //     );
+    // }
 
     return (
         <>

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { DateTime } from "luxon";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { getSocketInstance } from "@/lib/socket";
 
 const SECRET_CHALLENGE = "Sss333123###kyan";
